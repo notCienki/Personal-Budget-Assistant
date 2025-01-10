@@ -1,7 +1,6 @@
 import json
 
 categories_path = "src/data/categories.json"
-finance_path = "src/data/finance.json"
 
 categories_file = open(categories_path, "r+")
 
