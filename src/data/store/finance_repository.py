@@ -15,11 +15,14 @@ finance_data = json.load(finance_file)
 
 # -------------------------------
 #
-# Spending
+# 支出管理
 #
 # -------------------------------
 
 def get_all_spending():
+    """
+    获取所有支出
+    """
     spends =  finance_data['spending']
     returned = []
     for row in spends:
@@ -38,6 +41,9 @@ def get_spending_by_id(id):
     return None
 
 def add_spending(data):
+    """
+    添加新支出
+    """
     id = 0
     for row in finance_data['spending']:
         if row['id'] > id:
@@ -86,11 +92,14 @@ def update_spending(id, data):
         
 # -------------------------------
 #
-# Income
+# 收入管理
 #
 # -------------------------------
 
 def get_all_incomes():
+    """
+    获取所有收入
+    """
     return finance_data['incomes']
 
 
@@ -103,6 +112,9 @@ def get_income_by_id(id):
 
 
 def add_income(data):
+    """
+    添加新收入
+    """
     id = 0
     for row in finance_data['incomes']:
         if row['id'] > id:
@@ -138,7 +150,7 @@ def remove_income_by_id(id):
             finance_file.truncate()
             return 
 
-def update_spending(id, data):
+def update_income(id, data):
     if data["date"] is not None and not validate_date(data["date"]):
         raise ValueError("Invalid date")
     for row in finance_data['incomes']:
@@ -148,8 +160,8 @@ def update_spending(id, data):
             finance_file.seek(0)
             json.dump(finance_data, finance_file)
             finance_file.truncate()
-            return 
-        
+            return
+
 
 
 
