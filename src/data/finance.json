@@ -1,32 +1,90 @@
 {
   "spending": [
     {
+      "id": 1,
+      "currency": "USD",
+      "amount": 100,
+      "date": "1112-11-21",
+      "note": "Burger King",
+      "categoryId": 1,
+      "name": "best"
+    },
+    {
+      "id": 3,
+      "name": "Burger King",
       "currency": "PLN",
       "amount": 100,
-      "category": "food",
+      "date": "2023-08-01",
+      "note": "Burger King",
+      "categoryId": 1
+    },
+    {
+      "id": 4,
+      "name": "Petrol",
+      "currency": "PLN",
+      "amount": 1000,
+      "date": "2025-01-01",
+      "note": "For my car",
+      "categoryId": 1
+    },
+    {
+      "id": 5,
+      "name": "KFC",
+      "currency": "PLN",
+      "amount": 100,
+      "categoryId": 7,
       "date": "2023-08-01",
       "note": "Burger King"
     },
     {
+      "id": 6,
+      "name": "KFC",
       "currency": "PLN",
-      "amount": 50,
-      "category": "entertainment",
-      "date": "2023-08-02",
-      "note": "Cinema"
+      "amount": 100,
+      "categoryId": 7,
+      "date": "2023-08-01",
+      "note": "Burger King"
+    },
+    {
+      "id": 7,
+      "name": "KFC",
+      "currency": "PLN",
+      "amount": 100,
+      "categoryId": 7,
+      "date": "2023-08-01",
+      "note": "Burger King"
+    },
+    {
+      "id": 8,
+      "name": "KFC",
+      "currency": "PLN",
+      "amount": 100,
+      "categoryId": 7,
+      "date": "2023-08-01",
+      "note": "Burger King"
     }
   ],
   "incomes": [
     {
+      "id": 3,
       "currency": "PLN",
       "amount": 100,
       "date": "2023-08-01",
       "note": "Job"
     },
     {
+      "id": 4,
       "currency": "PLN",
       "amount": 50,
       "date": "2023-08-02",
       "note": null
+    },
+    {
+      "id": 5,
+      "currency": "PLN",
+      "amount": 100,
+      "date": "2023-08-01",
+      "note": "Gambling automatos"
     }
   ]
 }
