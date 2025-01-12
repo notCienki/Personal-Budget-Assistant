@@ -6,8 +6,22 @@ categories_file = open(categories_path, "r+")
 
 categories_data = json.load(categories_file)
 
-def get_categories():
+def get_all_categories():
     return categories_data['categories']
+
+def get_category_by_id(id):
+    categories = categories_data['categories']
+    for category in categories:
+        if category['id'] == id:
+            return category
+    return None
+
+def get_category_by_name(name):
+    categories = categories_data['categories']
+    for category in categories:
+        if category['name'] == name:
+            return category
+    return None
 
 def add_category(name):
     id = 0

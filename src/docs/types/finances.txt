@@ -1,0 +1,18 @@
+spending:
+      "id": int
+      "name": string
+      "currency": string
+      "amount": int
+      "date": string w postaci RRRR-MM-DD
+      "note": string
+      "categoryId": int
+
+income:
+      "id": int
+      "currency": string
+      "amount": int
+      "date": string w postaci RRRR-MM-DD
+      "note": string
+
+
+    
