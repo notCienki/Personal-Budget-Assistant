@@ -1,0 +1,24 @@
+.form-label {
+    font-size: 1.6rem;
+}
+.form-control {
+    font-size: 1.2rem;
+}
+.footer-link {
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+}
+.card-title {
+    font-size: 2rem;
+}
+.btnn {
+    font-size: 1.6rem;
+}
+.nav-link {
+    font-size: 1.6rem;
+}
+.display-4 {
+    font-weight: 600;
+}

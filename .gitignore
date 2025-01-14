@@ -1,0 +1,5 @@
+# Ignorowanie środowiska wirtualnego
+.venv/
+
+# Ignorowanie plików konfiguracyjnych VSCode
+.vscode/
