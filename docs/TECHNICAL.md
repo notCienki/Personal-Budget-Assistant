@@ -163,21 +163,3 @@ bcrypt
 json
 datetime
 ```
-
-## 7. Rozwiązywanie Problemów
-
-### 7.1 Typowe problemy
-1. Problem z logowaniem
-   - Sprawdź poprawność danych
-   - Zweryfikuj format hasła
-   - Sprawdź uprawnienia do plików
-
-2. Błędy waluty
-   - Sprawdź dostęp do pliku exchange_rates.json
-   - Zweryfikuj format liczb
-   - Sprawdź obsługiwane waluty
-
-### 7.2 Debugowanie
-- Logi zapisywane są w katalogu głównym
-- Błędy walidacji zwracają szczegółowe komunikaty
-- Sprawdź uprawnienia do plików w katalogu data/
