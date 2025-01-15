@@ -160,6 +160,8 @@ add_currency_rate(from_currency: str, to_currency: str, rate: float) -> None
 ### 6.2 Zależności
 ```
 bcrypt
+flask
+pywebview
 json
 datetime
 ```
