@@ -11,6 +11,10 @@ user_data = json.load(user_file)
 def is_user():
     return bool(user_data['user'])
 
+# null -> dict<user>
+def get_user():
+    return user_data
+
 
 # data -> false | user_data   Jeśli logowanie się nie powiedzie false, a jak się uda true
 def register(data):
