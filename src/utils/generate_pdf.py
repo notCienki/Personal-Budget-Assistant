@@ -3,6 +3,7 @@ import os
 from fpdf import FPDF
 from datetime import datetime
 font_path = os.path.join(os.getcwd(), 'DejaVuSans.ttf')
+image_path = os.path.join(os.getcwd(), 'chart.png')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from data.store import finance_repository as fr
@@ -48,12 +49,13 @@ def generate_pdf(month, year):
     pdf.cell(60, 10, txt="Opis", border=1)
     pdf.ln()
 
-# entry['note']
 
     for entry in income:
+        if not entry['note']:
+            entry['note'] = ""
         pdf.cell(40, 10, txt=entry['date'], border=1)
         pdf.cell(40, 10, txt=str(entry['amount']), border=1)
-        pdf.cell(60, 10, txt="a", border=1)
+        pdf.cell(60, 10, txt=entry['note'], border=1)
         pdf.ln()
     pdf.ln(5)
 
@@ -68,12 +70,16 @@ def generate_pdf(month, year):
     pdf.ln()
 
     for entry in spending:
+        if not entry['note']:
+            entry['note'] = ""
         pdf.cell(40, 10, txt=entry['date'], border=1)
         pdf.cell(50, 10, txt=entry['category'].capitalize(), border=1)
         pdf.cell(40, 10, txt=str(entry['amount']), border=1)
         pdf.cell(60, 10, txt=entry['note'], border=1)
         pdf.ln()
     pdf.ln(5)
+
+    pdf.image(image_path, w=200)
 
 
     # Data wygenerowania
@@ -83,4 +89,4 @@ def generate_pdf(month, year):
         
     pdf.output("output/raport_" + str(month) + "_" + str(year) + ".pdf")
 
-print(generate_pdf(11, 1112))
+print(generate_pdf(8, 2023))
