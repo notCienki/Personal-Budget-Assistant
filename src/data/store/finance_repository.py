@@ -5,7 +5,7 @@ import copy
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from utils.validation.validate_date import validate_date
-from categories_repository import get_category_by_id
+from data.store.categories_repository import get_category_by_id
 
 finance_path = "src/data/finance.json"
 
@@ -32,6 +32,28 @@ def get_all_spending():
         temp.pop('categoryId')
         returned.append(temp)
     return returned
+
+def get_month_spending(month, year):
+    spends =  finance_data['spending']
+    returned = []
+    for row in spends:
+        if row['date'].startswith(f"{year}-{month:02d}"):
+            temp = copy.deepcopy(row)
+            category_id = row['categoryId']
+            temp['category'] = get_category_by_id(category_id)["name"]
+            temp.pop('categoryId')
+            returned.append(temp)
+    return sorted(returned, key=lambda k: k['date'])
+
+def get_month_income(month, year):
+    spends =  finance_data['incomes']
+    returned = []
+    for row in spends:
+        if row['date'].startswith(f"{year}-{month:02d}"):
+            temp = copy.deepcopy(row)
+            returned.append(temp)
+    return sorted(returned, key=lambda k: k['date'])
+
 
 def get_spending_by_id(id):
     spends = finance_data['spending']
@@ -138,7 +160,6 @@ def add_income(data):
     finance_file.truncate()
     return temp
 
-add_income({"currency": "PLN", "amount": 100, "date": "2023-08-01", "note": "Gambling automatos"})
 
 
 def remove_income_by_id(id):
