@@ -6,6 +6,7 @@ user_file = open(user_path, "r+")
 user_data = json.load(user_file)
 
 
+
 # null -> bool  | jeśli użytkownik istnieje w user.json zwraca true, w innym wypadku false
 
 def is_user():
