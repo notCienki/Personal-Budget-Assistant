@@ -2,19 +2,19 @@ import json
 
 categories_path = "src/data/categories.json"
 
-# 加载类别数据
+# Load categories data
 categories_file = open(categories_path, "r+")
 categories_data = json.load(categories_file)
 
 def get_all_categories():
     """
-    获取所有类别
+    Get all categories
     """
     return categories_data['categories']
 
 def get_category_by_id(id):
     """
-    通过ID获取类别
+    Get category by ID
     """
     categories = categories_data['categories']
     for category in categories:
@@ -31,7 +31,7 @@ def get_category_by_name(name):
 
 def add_category(name):
     """
-    添加新类别
+    Add new category
     """
     id = 0
     for category in categories_data['categories']:
@@ -45,7 +45,7 @@ def add_category(name):
 
 def remove_category_by_name(name):
     """
-    通过名称删除类别
+    Remove category by name
     """
     for category in categories_data['categories']:
         if category['name'] == name:
@@ -65,7 +65,7 @@ def remove_category_by_id(id):
 
 def update_category_by_name(old_name, new_name):
     """
-    更新类别名称
+    Update category name
     """
     for category in categories_data['categories']:
         if category['name'] == old_name:

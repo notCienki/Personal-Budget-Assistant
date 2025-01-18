@@ -6,21 +6,21 @@ BASE_CURRENCY_PATH = "src/data/base_currency.json"  # Zaktualizowana ścieżka
 
 def load_exchange_rates():
     """
-    从文件加载汇率
+    Load exchange rates from file
     """
     with open(EXCHANGE_RATES_PATH, 'r') as file:
         return json.load(file)
 
 def save_exchange_rates(rates):
     """
-    将汇率保存到文件
+    Save exchange rates to file
     """
     with open(EXCHANGE_RATES_PATH, 'w') as file:
         json.dump(rates, file, indent=2)
 
 def get_exchange_rate(from_currency, to_currency):
     """
-    从文件中获取汇率
+    Get exchange rate from file
     """
     if from_currency == to_currency:
         return 1.0
@@ -29,11 +29,11 @@ def get_exchange_rate(from_currency, to_currency):
     try:
         return rates["rates"][from_currency][to_currency]
     except KeyError:
-        raise ValueError(f"找不到从 {from_currency} 到 {to_currency} 的汇率")
+        raise ValueError(f"Exchange rate not found from {from_currency} to {to_currency}")
 
 def convert_currency(amount, from_currency, to_currency):
     """
-    将一种货币转换为另一种货币
+    Convert one currency to another
     """
     if from_currency == to_currency:
         return amount
@@ -43,19 +43,19 @@ def convert_currency(amount, from_currency, to_currency):
 
 def add_currency_rate(from_currency, to_currency, rate):
     """
-    添加新的汇率到文件
+    Add new exchange rate to file
     """
     rates = load_exchange_rates()
     
-    # 如果第一种货币不存在，则添加
+    # If first currency doesn't exist, add it
     if from_currency not in rates["rates"]:
         rates["rates"][from_currency] = {}
     
-    # 如果第二种货币不存在，则添加
+    # If second currency doesn't exist, add it
     if to_currency not in rates["rates"]:
         rates["rates"][to_currency] = {}
     
-    # 双向添加汇率
+    # Add bidirectional exchange rates
     rates["rates"][from_currency][to_currency] = rate
     rates["rates"][to_currency][from_currency] = round(1 / rate, 4)
     
@@ -63,17 +63,17 @@ def add_currency_rate(from_currency, to_currency, rate):
 
 def get_available_currencies():
     """
-    返回可用货币列表
+    Return list of available currencies
     """
     rates = load_exchange_rates()
     return list(rates["rates"].keys())
 
-# 使用示例
+# Example usage
 if __name__ == "__main__":
-    # 检查可用货币
-    print("可用货币:", get_available_currencies())
+    # Check available currencies
+    print("Available currencies:", get_available_currencies())
     
-    # 转换示例
+    # Conversion example
     amount = 100
     from_curr = "EUR"
     to_curr = "PLN"

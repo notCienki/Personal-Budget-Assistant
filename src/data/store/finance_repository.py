@@ -15,13 +15,13 @@ finance_data = json.load(finance_file)
 
 # -------------------------------
 #
-# 支出管理
+# Expenses Management
 #
 # -------------------------------
 
 def get_all_spending():
     """
-    获取所有支出
+    Get all expenses
     """
     spends =  finance_data['spending']
     returned = []
@@ -64,7 +64,7 @@ def get_spending_by_id(id):
 
 def add_spending(data):
     """
-    添加新支出
+    Add new expense
     """
     id = 0
     for row in finance_data['spending']:
@@ -114,13 +114,13 @@ def update_spending(id, data):
         
 # -------------------------------
 #
-# 收入管理
+# Income Management
 #
 # -------------------------------
 
 def get_all_incomes():
     """
-    获取所有收入
+    Get all incomes
     """
     return finance_data['incomes']
 
@@ -135,7 +135,7 @@ def get_income_by_id(id):
 
 def add_income(data):
     """
-    添加新收入
+    Add new income
     """
     id = 0
     for row in finance_data['incomes']:
