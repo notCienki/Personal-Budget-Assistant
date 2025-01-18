@@ -28,6 +28,7 @@ def generuj_wykres_kolowy_wydatkow(dane, categories):
     plt.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=140)
     plt.title('Wydatki według kategorii')
     plt.axis('equal')
+    plt.savefig('wydatki_wedlug_kategorii.png')
     plt.show()
 
 # Generuj wykres kolumnowy wydatków
@@ -46,6 +47,7 @@ def generuj_wykres_kolumnowy_wydatkow(dane):
     plt.xlabel('Miesiąc')
     plt.ylabel('Kwota')
     plt.title('Wydatki')
+    plt.savefig('wydatki.png')
     plt.show()
 
 # Generuj wykres kolumnowy przychodów
@@ -64,6 +66,7 @@ def generuj_wykres_kolumnowy_przychodow(dane):
     plt.xlabel('Miesiąc')
     plt.ylabel('Kwota')
     plt.title('Przychody')
+    plt.savefig('przychody.png')
     plt.show()
 
 # Główna funkcja do rysowania wykresów
