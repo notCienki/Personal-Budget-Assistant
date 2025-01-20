@@ -1,3 +1,9 @@
+import os
+import sys
+
+# Dodaj katalog główny projektu (src) do sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import webview
 import threading
 from server import app
@@ -10,4 +16,4 @@ threading.Thread(target=start_server, daemon=True).start()
 
 # Wyświetl aplikację w WebView
 webview.create_window("Personalny asystent budzetu domowego", "http://127.0.0.1:5000")
-webview.start( )
+webview.start()
