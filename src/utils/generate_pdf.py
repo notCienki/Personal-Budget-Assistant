@@ -3,7 +3,6 @@ import os
 from fpdf import FPDF
 from datetime import datetime
 font_path = os.path.join(os.getcwd(), 'DejaVuSans.ttf')
-image_path = os.path.join(os.getcwd(), 'chart.png')
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from data.store import finance_repository as fr
@@ -79,8 +78,6 @@ def generate_pdf(month, year):
         pdf.ln()
     pdf.ln(5)
 
-    pdf.image(image_path, w=200)
-
 
     # Data wygenerowania
     pdf.set_font("DejaVu", size=10)
@@ -88,5 +85,3 @@ def generate_pdf(month, year):
 
         
     pdf.output("output/raport_" + str(month) + "_" + str(year) + ".pdf")
-
-print(generate_pdf(8, 2023))
