@@ -1,6 +1,6 @@
 import os
 import sys
-
+sys.dont_write_bytecode = True
 # Dodaj katalog główny projektu (src) do sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 

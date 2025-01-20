@@ -4,7 +4,8 @@ from fpdf import FPDF
 from datetime import datetime
 
 # Ścieżka do pliku czcionki
-font_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'DejaVuSans.ttf'))
+font_path = os.path.abspath('DejaVuSans.ttf')
+# font_path = "https://cdn.jsdelivr.net/npm/dejavu-sans@1.0.0/css/dejavu-sans.min.css"
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from data.store import finance_repository as fr
@@ -64,7 +65,7 @@ def generate_pdf(month, year):
     pdf.cell(40, 10, txt="Data", border=1)
     pdf.cell(50, 10, txt="Kategoria", border=1)
     pdf.cell(40, 10, txt="Kwota (PLN)", border=1)
-    pdf.cell(60, 10, txt="Opis", border=1)
+    pdf.cell(60, 10, txt="Nazwa", border=1)
     pdf.ln()
 
     for entry in spending:
@@ -73,7 +74,7 @@ def generate_pdf(month, year):
         pdf.cell(40, 10, txt=entry['date'], border=1)
         pdf.cell(50, 10, txt=entry['category'].capitalize(), border=1)
         pdf.cell(40, 10, txt=str(entry['amount']), border=1)
-        pdf.cell(60, 10, txt=entry['note'], border=1)
+        pdf.cell(60, 10, txt=entry['name'], border=1)
         pdf.ln()
     pdf.ln(5)
 
