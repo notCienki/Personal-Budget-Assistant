@@ -10,4 +10,4 @@ threading.Thread(target=start_server, daemon=True).start()
 
 # Wyświetl aplikację w WebView
 webview.create_window("Personalny asystent budzetu domowego", "http://127.0.0.1:5000")
-webview.start()
+webview.start( )

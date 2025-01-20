@@ -1,5 +1,4 @@
 from flask import Flask, render_template, send_from_directory
-
 app = Flask(__name__, static_folder='../GUI', template_folder='../GUI')
 
 @app.route('/')
