@@ -41,6 +41,11 @@
                             >
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="categories.html"
+                                >Zarządzanie kategoriami</a
+                            >
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="currency.html"
                                 >Przelicznik walut</a
                             >
@@ -69,7 +74,7 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                id="incomeName"
+                                id="incomeNote"
                                 placeholder="Nazwa przychodu"
                             />
                         </div>
@@ -134,53 +139,6 @@
 
         <!-- Scripts -->
         <script>
-            // Income Chart Setup
-            const ctx = document.getElementById("incomeChart").getContext("2d");
-            const incomeChart = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: [
-                        "Styczeń",
-                        "Luty",
-                        "Marzec",
-                        "Kwiecień",
-                        "Maj",
-                        "Czerwiec",
-                        "Lipiec",
-                        "Sierpień",
-                        "Wrzesień",
-                        "Październik",
-                        "Listopad",
-                        "Grudzień",
-                    ],
-                    datasets: [
-                        {
-                            label: "Przychody (PLN)",
-                            data: [
-                                4000, 4500, 4200, 4300, 5000, 4800, 4600, 4700,
-                                4900, 5200, 5100, 5300,
-                            ],
-                            borderColor: "rgba(54, 162, 235, 1)",
-                            backgroundColor: "rgba(54, 162, 235, 0.2)",
-                            tension: 0.4,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: "top",
-                        },
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                        },
-                    },
-                },
-            });
-
             // Add Income Logic
             document
                 .getElementById("addIncomeButton")
@@ -223,6 +181,54 @@
                         })
                         .catch((error) => {
                             alert("Wystąpił błąd: " + error.message);
+                        });
+                });
+        </script>
+        <script>
+            document
+                .getElementById("addIncomeButton")
+                .addEventListener("click", () => {
+                    const amount =
+                        document.getElementById("incomeAmount").value;
+                    const date = document.getElementById("incomeDate").value;
+                    const note = document.getElementById("incomeNote").value; // Nazwa przychodu jako notatka
+
+                    if (!amount || !date) {
+                        alert("Proszę wypełnić wszystkie wymagane pola!");
+                        return;
+                    }
+
+                    const data = {
+                        amount: amount,
+                        date: date,
+                        note: note,
+                    };
+
+                    // Wyślij dane do backendu
+                    fetch("/add_income", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(data),
+                    })
+                        .then((response) => response.json())
+                        .then((result) => {
+                            if (result.success) {
+                                alert("Przychód został dodany!");
+                                // Opcjonalnie zresetuj formularz
+                                document
+                                    .getElementById("addIncomeForm")
+                                    .reset();
+                            } else {
+                                alert("Błąd: " + result.message);
+                            }
+                        })
+                        .catch((error) => {
+                            alert(
+                                "Wystąpił błąd podczas dodawania przychodu: " +
+                                    error.message
+                            );
                         });
                 });
         </script>
