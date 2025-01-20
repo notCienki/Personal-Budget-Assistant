@@ -157,15 +157,6 @@
             </div>
 
             <!-- Finance Management Section -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h4 class="card-title">Przegląd przychodów</h4>
-                    <button id="viewIncomes" class="btn btn-secondary w-100">
-                        Pokaż przychody
-                    </button>
-                    <ul id="incomesList" class="list-group mt-3"></ul>
-                </div>
-            </div>
         </div>
 
         <!-- Footer -->
@@ -222,32 +213,6 @@
                 });
 
             // View incomes logic (placeholder data)
-            document
-                .getElementById("viewIncomes")
-                .addEventListener("click", () => {
-                    const incomesList = document.getElementById("incomesList");
-                    incomesList.innerHTML = "";
-                    const incomes = [
-                        {
-                            id: 1,
-                            amount: "2000 PLN",
-                            date: "2023-01-01",
-                            note: "Pensja",
-                        },
-                        {
-                            id: 2,
-                            amount: "500 PLN",
-                            date: "2023-01-15",
-                            note: "Freelance",
-                        },
-                    ];
-                    incomes.forEach((income) => {
-                        const li = document.createElement("li");
-                        li.className = "list-group-item";
-                        li.textContent = `${income.date}: ${income.amount} - ${income.note}`;
-                        incomesList.appendChild(li);
-                    });
-                });
         </script>
     </body>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

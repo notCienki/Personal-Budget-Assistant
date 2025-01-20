@@ -1,8 +1,10 @@
-import sys
 import os
+import sys
 from fpdf import FPDF
 from datetime import datetime
-font_path = os.path.join(os.getcwd(), 'DejaVuSans.ttf')
+
+# Ścieżka do pliku czcionki
+font_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'DejaVuSans.ttf'))
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from data.store import finance_repository as fr
@@ -15,12 +17,11 @@ def generate_pdf(month, year):
     spending_summary = 0
 
     for i in income:
-        income_summary+=i['amount']
-
+        income_summary += i['amount']
 
     for i in spending:
-        spending_summary+=i['amount']
-    
+        spending_summary += i['amount']
+
     pdf = FPDF()
     pdf.add_page()
     pdf.add_font('DejaVu', '', font_path, uni=True)
@@ -30,7 +31,6 @@ def generate_pdf(month, year):
     pdf.set_font("DejaVu", style='B', size=16)
     pdf.cell(200, 10, txt=f"Raport Wydatków i Wpływów - {month} / {year}", ln=True, align='C')
     pdf.ln(10)
-    
 
     # Podsumowanie
     pdf.set_font("DejaVu", style='B', size=14)
@@ -47,7 +47,6 @@ def generate_pdf(month, year):
     pdf.cell(40, 10, txt="Kwota (PLN)", border=1)
     pdf.cell(60, 10, txt="Opis", border=1)
     pdf.ln()
-
 
     for entry in income:
         if not entry['note']:
@@ -78,10 +77,11 @@ def generate_pdf(month, year):
         pdf.ln()
     pdf.ln(5)
 
-
     # Data wygenerowania
     pdf.set_font("DejaVu", size=10)
     pdf.cell(200, 10, txt=f"Data wygenerowania raportu: {datetime.now().strftime('%d-%m-%Y')}", ln=True, align='C')
 
-        
-    pdf.output("output/raport_" + str(month) + "_" + str(year) + ".pdf")
+    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output')
+    os.makedirs(output_dir, exist_ok=True)  # Upewnij się, że folder istnieje
+
+    pdf.output(os.path.join(output_dir, f"raport_{month}_{year}.pdf"))
