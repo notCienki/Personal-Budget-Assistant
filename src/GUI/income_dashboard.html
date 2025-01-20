@@ -116,6 +116,15 @@
                     <canvas id="incomeChart" height="100"></canvas>
                 </div>
             </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Przegląd przychodów</h4>
+                    <button id="viewIncomes" class="btn btn-secondary w-100">
+                        Wygeneruj raport z ostatniego miesiąca
+                    </button>
+                    <ul id="incomesList" class="list-group mt-3"></ul>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -189,6 +198,32 @@
                     } else {
                         alert("Proszę wypełnić wszystkie pola.");
                     }
+                });
+        </script>
+        <script>
+            document
+                .getElementById("viewIncomes")
+                .addEventListener("click", () => {
+                    fetch("/generate_report", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                alert(data.message);
+                            } else {
+                                alert(
+                                    "Błąd podczas generowania raportu: " +
+                                        data.message
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            alert("Wystąpił błąd: " + error.message);
+                        });
                 });
         </script>
     </body>
