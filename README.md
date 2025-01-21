@@ -207,4 +207,12 @@ Tak, wszystkie dane są przechowywane lokalnie na Twoim komputerze i zabezpieczo
 
 ![Przeliczanie Walut](images/Kantor.png)
 
+### Skład zespołu :  
+- Karol Nowocień
+- Jakub Sternik
+- Mateusz Kita
+- Tobiasz Adamczyk
+- Jan Sularz
+- Jan Behrendt
+  
 #### © 2025 Personal Home Budget Assistant
