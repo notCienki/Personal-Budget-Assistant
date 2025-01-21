@@ -55,7 +55,6 @@ python py .\src\server\main.py
 
 - Bezpieczna rejestracja i logowanie
 - Szyfrowanie haseł
-- Możliwość resetowania hasła
 
 ### 2. Zarządzanie wydatkami
 
@@ -110,17 +109,17 @@ Wspierane waluty:
 
 ## Instrukcja użytkowania
 
-### Pierwsze kroki
+### Rejestracja i logowanie
 
 1. **Rejestracja**
 
    ```
-   Menu główne -> Rejestracja -> Wypełnij formularz
+   Po wejściu do aplikacji po raz pierwszy, uzupełnij formularz rejestracyjny i kliknij przycisk Zarejestruj.
    ```
 
 2. **Logowanie**
    ```
-   Menu główne -> Logowanie -> Wprowadź dane
+   Po każdorazowym otwarciu aplikacji wpisz swój login oraz hasło.
    ```
 
 ### Podstawowe operacje
@@ -181,19 +180,16 @@ Wspierane waluty:
 
 - Szyfrowanie haseł
 - Walidacja danych wejściowych
-- Automatyczne kopie zapasowe
 
 ### Format danych
 
 - Wszystkie dane przechowywane są w formacie JSON
-- Automatyczna walidacja integralności danych
-- Regularne kopie zapasowe
 
 ## FAQ
 
 ### Czy mogę eksportować swoje dane?
 
-Tak, dane można eksportować do formatu CSV lub JSON.
+Tak, dane można eksportować do formatu PDF.
 
 ### Czy moje dane są bezpieczne?
 
