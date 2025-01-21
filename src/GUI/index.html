@@ -1,278 +1,140 @@
+
 <!DOCTYPE html>
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aplikacja Personal Home Budget Assistant</title>
-    <!-- Import Bootstrap -->
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-
+    <title>Logowanie / Rejestracja</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="index.html">Budżet Domowy</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Strona główna</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="income_dashboard.html">Przychody</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="categories.html"
-                >Zarządzanie kategoriami</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="currency.html">Przelicznik walut</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="container mt-4">
-      <!-- Header -->
-
-      <!-- Monthly Expense Section -->
-      <div class="card mb-4">
-        <div class="card-body text-center">
-          <h4 class="card-title">Twoje wydatki w tym miesiącu</h4>
-          <p class="display-6">1 500 PLN</p>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Dodaj wydatek</h5>
-          <form id="addExpenseForm" class="row g-3">
-            <div class="col-md-4">
-              <label for="expenseName" class="form-label">Nazwa wydatku</label>
-              <input
-                type="text"
-                class="form-control"
-                id="expenseName"
-                placeholder="Nazwa wydatku"
-              />
-            </div>
-            <div class="col-md-4">
-              <label for="expenseCategory" class="form-label">Kategoria</label>
-              <select id="expenseCategory" class="form-select">
-                <!-- Kategorie zostaną załadowane dynamicznie -->
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label for="expenseAmount" class="form-label">Kwota</label>
-              <input
-                type="number"
-                class="form-control"
-                id="expenseAmount"
-                placeholder="Kwota"
-              />
-            </div>
-            <div class="col-md-12">
-              <label for="expenseDescription" class="form-label">Opis</label>
-              <textarea
-                class="form-control"
-                id="expenseDescription"
-                rows="2"
-                placeholder="Dodaj opis wydatku (opcjonalne)"
-              ></textarea>
-            </div>
-
-            <div class="col-12">
-              <button
-                type="button"
-                id="addExpenseButton"
-                class="btn btn-primary w-100"
-              >
-                Dodaj wydatek
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="card mb-4">
-        <div class="card-body">
-          <h4 class="card-title">Wydatki z bieżącego miesiąca</h4>
-          <ul id="this-month-expenses" class="list-group mt-3"></ul>
-        </div>
+  <body class="container mt-5">
+    <h2 class="mb-4 text-center">
+      {% if mode == 'login' %}Logowanie{% else %}Rejestracja{% endif %}
+    </h2>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <form id="authForm">
+          <!-- Logowanie: login, hasło -->
+          {% if mode == 'login' %}
+          <div class="mb-3">
+            <label for="loginField" class="form-label">Login</label>
+            <input type="text" class="form-control" id="loginField" />
+          </div>
+          <div class="mb-3">
+            <label for="passwordField" class="form-label">Hasło</label>
+            <input type="password" class="form-control" id="passwordField" />
+          </div>
+          <button
+            type="button"
+            id="loginButton"
+            class="btn btn-primary w-100"
+          >
+            Zaloguj
+          </button>
+          {% else %}
+          <!-- Rejestracja: login, imię, nazwisko, email, hasło -->
+          <div class="mb-3">
+            <label for="loginField" class="form-label">Login</label>
+            <input type="text" class="form-control" id="loginField" />
+          </div>
+          <div class="mb-3">
+            <label for="nameField" class="form-label">Imię</label>
+            <input type="text" class="form-control" id="nameField" />
+          </div>
+          <div class="mb-3">
+            <label for="lastNameField" class="form-label">Nazwisko</label>
+            <input type="text" class="form-control" id="lastNameField" />
+          </div>
+          <div class="mb-3">
+            <label for="emailField" class="form-label">E-mail</label>
+            <input type="email" class="form-control" id="emailField" />
+          </div>
+          <div class="mb-3">
+            <label for="passwordField" class="form-label">Hasło</label>
+            <input type="password" class="form-control" id="passwordField" />
+          </div>
+          <button
+            type="button"
+            id="registerButton"
+            class="btn btn-success w-100"
+          >
+            Zarejestruj
+          </button>
+          {% endif %}
+        </form>
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center mt-5">
-      <small>&copy; 2025 Personal Home Budget Assistant</small>
-    </footer>
-
     <script>
-      document
-        .getElementById("addExpenseButton")
-        .addEventListener("click", () => {
-          const name = document.getElementById("expenseName").value.trim();
-          const category = document.getElementById("expenseCategory").value;
-          const amount = document.getElementById("expenseAmount").value.trim();
-          const description = document
-            .getElementById("expenseDescription")
-            .value.trim(); // Pobierz opis
+      const mode = "{{ mode }}";
+      if (mode === "login") {
+        document
+          .getElementById("loginButton")
+          .addEventListener("click", () => {
+            const login = document.getElementById("loginField").value.trim();
+            const password = document
+              .getElementById("passwordField")
+              .value.trim();
 
-          // Walidacja pól
-          if (!name || !category || !amount) {
-            alert("Proszę wypełnić wszystkie wymagane pola!");
-            return;
-          }
+            if (!login || !password) {
+              alert("Uzupełnij wszystkie pola!");
+              return;
+            }
 
-          // Przygotowanie danych do wysłania
-          const date = new Date().toISOString().split("T")[0];
-          const data = {
-            name: name,
-            category: category,
-            amount: parseFloat(amount),
-            description: description, // Dodaj opis do danych
-            date: date,
-          };
-
-          // Wyślij dane do backendu
-          fetch("/add_expense", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          })
-            .then((response) => response.json())
-            .then((result) => {
-              if (result.success) {
-                alert("Wydatek został dodany!");
-                // Zresetuj formularz
-                updateTotalExpenses(); // Zaktualizuj sumę wydatków
-                updateThisMonthExpenses();
-                document.getElementById("addExpenseForm").reset();
-              } else {
-                alert("Błąd: " + result.message);
-              }
+            fetch("/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ login, password }),
             })
-            .catch((error) => {
-              alert(
-                "Wystąpił błąd podczas dodawania wydatku: " + error.message
-              );
-            });
-        });
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.success) {
+                  alert("Zalogowano pomyślnie");
+                  window.location.href = "/";
+                } else {
+                  alert(data.message);
+                }
+              })
+              .catch((err) => console.error(err));
+          });
+      } else {
+        document
+          .getElementById("registerButton")
+          .addEventListener("click", () => {
+            const login = document.getElementById("loginField").value.trim();
+            const name = document.getElementById("nameField").value.trim();
+            const last_name = document
+              .getElementById("lastNameField")
+              .value.trim();
+            const email = document.getElementById("emailField").value.trim();
+            const password = document
+              .getElementById("passwordField")
+              .value.trim();
 
-      function loadCategories() {
-        fetch("/api/categories")
-          .then((response) => response.json())
-          .then((data) => {
-            const categorySelect = document.getElementById("expenseCategory");
-            categorySelect.innerHTML = ""; // Wyczyść poprzednie opcje
+            if (!login || !name || !last_name || !email || !password) {
+              alert("Uzupełnij wszystkie pola!");
+              return;
+            }
 
-            // Dodaj opcje do <select>
-            data.categories.forEach((category) => {
-              const option = document.createElement("option");
-              option.value = category.id; // Użyj ID jako wartości
-              option.textContent = category.name; // Nazwa kategorii
-              categorySelect.appendChild(option);
-            });
-          })
-          .catch((error) => {
-            console.error("Błąd podczas ładowania kategorii:", error);
+            fetch("/api/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ login, name, last_name, email, password }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.success) {
+                  alert("Rejestracja udana");
+                  window.location.href = "/";
+                } else {
+                  alert(data.message);
+                }
+              })
+              .catch((err) => console.error(err));
           });
       }
-
-      function deleteExpense(id) {
-        fetch(`/api/expenses/${id}`, { method: "DELETE" })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              updateThisMonthExpenses();
-              updateTotalExpenses();
-            } else {
-              console.error("Error deleting expense:", data.error);
-            }
-          })
-          .catch((error) => console.error("Error deleting expense:", error));
-      }
-
-      function updateThisMonthExpenses() {
-        fetch("/api/expenses/this_month/list")
-          .then((response) => response.json())
-          .then((data) => {
-            const expensesList = document.getElementById("this-month-expenses");
-            expensesList.innerHTML = "";
-            data.expenses.forEach((expense) => {
-              const expenseListItem = document.createElement("li");
-              expenseListItem.classList.add(
-                "list-group-item",
-                "d-flex",
-                "align-items-center",
-                "justify-content-between"
-              );
-              expenseListItem.style.width = "100%";
-
-              const expenseText = document.createElement("span");
-              expenseText.classList.add("text-center");
-              expenseText.style.flexGrow = "1";
-              expenseText.innerText = `${expense.name}: ${expense.amount} PLN | ${expense.date}`;
-              expenseListItem.appendChild(expenseText);
-
-              const deleteButton = document.createElement("button");
-              deleteButton.classList.add("btn", "btn-danger", "float-right");
-              deleteButton.style.marginLeft = "auto";
-              deleteButton.innerText = "Usuń";
-              deleteButton.onclick = () => deleteExpense(expense.id);
-              expenseListItem.appendChild(deleteButton);
-
-              expensesList.appendChild(expenseListItem);
-            });
-          })
-          .catch((error) =>
-            console.error(
-              "Error fetching list of this month's expenses:",
-              error
-            )
-          );
-      }
-
-      function updateTotalExpenses() {
-        fetch("/api/expenses/last_30_days")
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              const totalExpensesElement = document.querySelector(".display-6");
-              totalExpensesElement.textContent = `${data.total.toFixed(2)} PLN`;
-            } else {
-              console.error("Błąd podczas pobierania wydatków:", data.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Błąd sieci:", error);
-          });
-      }
-
-      // Załaduj kategorie po załadowaniu strony
-      window.onload = () => {
-        loadCategories();
-        updateTotalExpenses(); // Aktualizacja sumy wydatków
-        updateThisMonthExpenses();
-      };
     </script>
   </body>
-  <!-- Bootstrap JS (wymaga Popper.js) -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </html>
