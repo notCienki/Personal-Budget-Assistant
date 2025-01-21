@@ -194,3 +194,17 @@ Tak, dane można eksportować do formatu PDF.
 ### Czy moje dane są bezpieczne?
 
 Tak, wszystkie dane są przechowywane lokalnie na Twoim komputerze i zabezpieczone szyfrowaniem.
+
+### Podgląd Aplikacji
+
+![Logowanie](images/Login.png)
+
+![Wydatki](images/Wydatki.png)
+
+![Przychody](images/Przychody.png)
+
+![Kategorie](images/Kategorie.png)
+
+![Przeliczanie Walut](images/Kantor.png)
+
+#### © 2025 Personal Home Budget Assistant

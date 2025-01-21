@@ -4,7 +4,6 @@ from math import ceil
 
 
 def get_monthly_financial_data(transactions):
-    # przychody i wydatki z kazdego miesiaca
     monthly_data = defaultdict(lambda: {"income_sum": 0, "expense_sum": 0})
 
     for type in transactions.keys():
@@ -20,7 +19,6 @@ def get_monthly_financial_data(transactions):
 
 
 def calculate_monthly_savings(transactions):
-    # bilans z kazdego miesiaca
     monthly_data = get_monthly_financial_data(transactions)
     monthly_savings = {}
     for (year, month), values in monthly_data.items():
@@ -33,8 +31,6 @@ def calculate_monthly_savings(transactions):
 
 
 def forecast_savings(transactions, months_ahead):
-    # prognoza oszczednosci na podstawie ostatnich miesiecy
-    # months_ahead - liczba miesiecy na ktore chcemy przygotowac prognoze
     monthly_savings = calculate_monthly_savings(transactions)
 
     current_savings = 0
@@ -79,8 +75,6 @@ def forecast_savings(transactions, months_ahead):
 
 
 def calculate_time_to_goal(transactions, goal_amount):
-    # sprawdza po ilu miesiacach uzytkownik osiagnie zamierzony cel oszczednosciowy
-    # goal_amount - docelowa kwota oszczednosci
     current_savings = 0
     monthly_savings = calculate_monthly_savings(transactions)
     for k, v in monthly_savings.items():
@@ -98,7 +92,7 @@ def calculate_time_to_goal(transactions, goal_amount):
 
     avg_savings = sum(last_values) / len(last_values)
     if avg_savings < 0:
-        # nie jest mozliwe osiagniecie celu
+
         return None
 
     remaining_amount = goal_amount - current_savings

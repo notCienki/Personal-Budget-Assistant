@@ -20,9 +20,7 @@ finance_data = json.load(finance_file)
 # -------------------------------
 
 def get_all_spending():
-    """
-    Get all expenses
-    """
+
     spends =  finance_data['spending']
     returned = []
     for row in spends:
@@ -63,9 +61,6 @@ def get_spending_by_id(id):
     return None
 
 def add_spending(data):
-    """
-    Add new expense
-    """
     id = 0
     for row in finance_data['spending']:
         if row['id'] > id:
@@ -119,9 +114,6 @@ def update_spending(id, data):
 # -------------------------------
 
 def get_all_incomes():
-    """
-    Get all incomes
-    """
     return finance_data['incomes']
 
 
@@ -134,9 +126,7 @@ def get_income_by_id(id):
 
 
 def add_income(data):
-    """
-    Add new income
-    """
+
     id = 0
     for row in finance_data['incomes']:
         if row['id'] > id:

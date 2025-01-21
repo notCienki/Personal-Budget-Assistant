@@ -15,7 +15,6 @@
     <div class="row">
       <div class="col-md-6 offset-md-3">
         <form id="authForm">
-          <!-- Logowanie: login, hasło -->
           {% if mode == 'login' %}
           <div class="mb-3">
             <label for="loginField" class="form-label">Login</label>
@@ -29,7 +28,6 @@
             Zaloguj
           </button>
           {% else %}
-          <!-- Rejestracja: login, imię, nazwisko, email, hasło -->
           <div class="mb-3">
             <label for="loginField" class="form-label">Login</label>
             <input type="text" class="form-control" id="loginField" />

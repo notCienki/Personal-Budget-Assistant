@@ -3,7 +3,7 @@ import sys
 from fpdf import FPDF
 from datetime import datetime
 
-# Ścieżka do pliku czcionki
+
 font_path = os.path.abspath('DejaVuSans.ttf')
 # font_path = "https://cdn.jsdelivr.net/npm/dejavu-sans@1.0.0/css/dejavu-sans.min.css"
 
@@ -78,11 +78,11 @@ def generate_pdf(month, year):
         pdf.ln()
     pdf.ln(5)
 
-    # Data wygenerowania
+
     pdf.set_font("DejaVu", size=10)
     pdf.cell(200, 10, txt=f"Data wygenerowania raportu: {datetime.now().strftime('%d-%m-%Y')}", ln=True, align='C')
 
     output_dir = os.path.join(os.path.dirname(__file__), '..', 'output')
-    os.makedirs(output_dir, exist_ok=True)  # Upewnij się, że folder istnieje
+    os.makedirs(output_dir, exist_ok=True)
 
     pdf.output(os.path.join(output_dir, f"raport_{month}_{year}.pdf"))

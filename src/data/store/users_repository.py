@@ -7,18 +7,13 @@ user_file = open(user_path, "r+")
 user_data = json.load(user_file)
 
 
-
-# null -> bool  | jeśli użytkownik istnieje w user.json zwraca true, w innym wypadku false
-
 def is_user():
     return bool(user_data['user'])
 
-# null -> dict<user>
+
 def get_user():
     return user_data
 
-
-# data -> false | user_data   Jeśli logowanie się nie powiedzie false, a jak się uda true
 def register(data):
 
     if "login" not in data:
@@ -49,7 +44,7 @@ def register(data):
     user_file.truncate()
     return True
 
-# login, password -> bool
+
 def login(login, password):
     if "user" not in user_data:
         return False

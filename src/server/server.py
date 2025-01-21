@@ -6,7 +6,7 @@ from datetime import datetime
 from flask import request, jsonify
 from data.store.finance_repository import add_income, get_month_income, remove_income_by_id
 
-# Dodaj katalog główny projektu (src) do sys.path
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.generate_pdf import generate_pdf
@@ -29,12 +29,12 @@ def currency():
 def income():
     return render_template('income_dashboard.html')
 
-# Obsługa favicon
+
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-# Obsługa innych plików statycznych
+
 @app.route('/<path:filename>')
 def static_files(filename):
     return send_from_directory(app.static_folder, filename)
@@ -50,16 +50,16 @@ def delete_income(id):
 @app.route('/add_income', methods=['POST'])
 def add_income_route():
     try:
-        data = request.json  # Pobierz dane z żądania POST
+        data = request.json
         if not data:
             raise ValueError("No data provided")
         
-        # Wywołaj funkcję `add_income` z finance_repository
+
         new_income = add_income({
-            "currency": "PLN",  # Możesz dostosować walutę, jeśli jest zawsze stała
+            "currency": "PLN",
             "amount": float(data["amount"]),
             "date": data["date"],
-            "note": data.get("note", "")  # Jeśli brak notatki, ustaw pusty tekst
+            "note": data.get("note", "")
         })
         
         return jsonify({"success": True, "income": new_income})
@@ -71,18 +71,17 @@ from data.store.finance_repository import add_spending, get_month_spending
 @app.route('/add_expense', methods=['POST'])
 def add_expense_route():
     try:
-        data = request.json  # Pobierz dane z żądania POST
+        data = request.json
         if not data:
             raise ValueError("Brak danych w żądaniu.")
-        
-        # Wywołaj funkcję `add_spending` z finance_repository
+
         new_expense = add_spending({
             "name": data["name"],
             "amount": float(data["amount"]),
-            "currency": "PLN",  # Stała waluta
+            "currency": "PLN",
             "category": int(data["category"]),
             "date": data["date"],
-            "note": data.get("description", "")  # Pobierz opis jako notatkę
+            "note": data.get("description", "")
         })
         
         return jsonify({"success": True, "expense": new_expense})
@@ -99,17 +98,13 @@ from data.store.categories_repository import get_all_categories, add_category, r
 
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
-    """
-    API: Zwróć wszystkie kategorie
-    """
+
     categories = get_all_categories()
     return jsonify({"categories": categories})
 
 @app.route('/api/add_category', methods=['POST'])
 def api_add_category():
-    """
-    API: Dodaj nową kategorię
-    """
+
     try:
         data = request.json
         if not data or "name" not in data:
@@ -121,9 +116,7 @@ def api_add_category():
 
 @app.route('/api/remove_category', methods=['POST'])
 def api_remove_category():
-    """
-    API: Usuń kategorię
-    """
+
     try:
         data = request.json
         if not data or "name" not in data:
@@ -138,24 +131,22 @@ from data.store.finance_repository import get_all_spending
 
 @app.route('/api/expenses/last_30_days', methods=['GET'])
 def get_expenses_last_30_days():
-    """
-    Zwróć sumę wydatków z ostatnich 30 dni
-    """
+
     try:
-        # Pobierz wszystkie wydatki
+
         all_expenses = get_all_spending()
         
-        # Oblicz datę sprzed 30 dni
+
         today = datetime.now()
         thirty_days_ago = today - timedelta(days=30)
         
-        # Filtruj wydatki z ostatnich 30 dni
+
         recent_expenses = [
             expense for expense in all_expenses
             if datetime.strptime(expense['date'], "%Y-%m-%d") >= thirty_days_ago
         ]
         
-        # Oblicz sumę wydatków
+
         total = sum(expense['amount'] for expense in recent_expenses)
         
         return jsonify({"success": True, "total": total})
@@ -170,7 +161,7 @@ from data.store.finance_repository import get_all_incomes, remove_spending_by_id
 @app.route('/api/expenses/<int:expense_id>', methods=['DELETE'])
 def delete_expense(expense_id):
     try:
-        # Delete expense from database
+
         remove_spending_by_id(expense_id)
         return jsonify({'success': True})
     except Exception as e:
@@ -179,22 +170,17 @@ def delete_expense(expense_id):
 
 @app.route('/api/incomes/this_month/list', methods=['GET'])
 def get_incomes_this_month_list():
-    """
-    Return the list of incomes in the current month
-    """
+
     try:
         now = datetime.now()
 
-# Get the current year
+
         current_year = now.year
 
-# Get the current month
+
         current_month = now.month
         incomes = get_month_income(current_month,current_year)  
-        # Pobierz wszystkie przychody
-       
-        
-        # Przygotuj dane do wysłania
+
         data = {
             'incomes': incomes
         }
@@ -207,22 +193,15 @@ def get_incomes_this_month_list():
 
 @app.route('/api/expenses/this_month/list', methods=['GET'])
 def get_expenses_this_month_list():
-    """
-    Return the list of incomes in the current month
-    """
     try:
         now = datetime.now()
 
-# Get the current year
         current_year = now.year
 
-# Get the current month
+
         current_month = now.month
         expenses = get_month_spending(current_month,current_year)  
-        # Pobierz wszystkie przychody
-       
-        
-        # Przygotuj dane do wysłania
+
         data = {
             'expenses': expenses
         }
@@ -238,17 +217,15 @@ def get_incomes_this_month():
     Zwróć sumę przychodów z bieżącego miesiąca
     """
     try:
-        all_incomes = get_all_incomes()  # Pobierz wszystkie przychody
+        all_incomes = get_all_incomes()
         today = datetime.now()
-        current_month_start = today.replace(day=1)  # Pierwszy dzień miesiąca
+        current_month_start = today.replace(day=1)
         
-        # Filtruj przychody z bieżącego miesiąca
         monthly_incomes = [
             income for income in all_incomes
             if datetime.strptime(income['date'], "%Y-%m-%d") >= current_month_start
         ]
         
-        # Oblicz sumę przychodów
         total = sum(income['amount'] for income in monthly_incomes)
         
         return jsonify({"success": True, "total": total})
@@ -294,13 +271,6 @@ def register_user():
             "password": password
         }):
             return jsonify({'success': True})
-        # register({
-        #     "login": "admin",
-        #     "name": "admin",
-        #     "last_name": "admin",
-        #     "email": "admin",
-        #     "password": "admin"})
-        # return jsonify({'success': True})
 
         
     except Exception as e:
@@ -308,7 +278,7 @@ def register_user():
 
 
 
-# Nowa trasa do generowania raportu
+
 @app.route('/generate_report', methods=['POST'])
 def generate_report():
     now = datetime.now()
