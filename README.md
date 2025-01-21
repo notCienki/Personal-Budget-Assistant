@@ -1,8 +1,11 @@
 # Personalny-Asystent-Budzetu-Domowego-PWI2024
+
 Oficjalne repozytorium projektu programistycznego z przedmiotu PWI grupy Z7.
+
 # Personalny Asystent Budżetu Domowego
 
 ## Spis treści
+
 1. [Wprowadzenie](#wprowadzenie)
 2. [Instalacja](#instalacja)
 3. [Funkcjonalności](#funkcjonalności)
@@ -11,7 +14,9 @@ Oficjalne repozytorium projektu programistycznego z przedmiotu PWI grupy Z7.
 6. [FAQ](#faq)
 
 ## Wprowadzenie
+
 Personalny Asystent Budżetu Domowego to zaawansowane narzędzie do zarządzania finansami osobistymi, które umożliwia:
+
 - Śledzenie wydatków i przychodów
 - Kategoryzację transakcji
 - Automatyczne przeliczanie walut
@@ -19,41 +24,56 @@ Personalny Asystent Budżetu Domowego to zaawansowane narzędzie do zarządzania
 - Bezpieczne przechowywanie danych
 
 ## Instalacja
+
 ### Wymagania systemowe
+
 - Python 3.8 lub nowszy
-- 100 MB wolnego miejsca na dysku
+- 20 MB wolnego miejsca na dysku
 
 ### Proces instalacji
+
 1. Pobierz aplikację z repozytorium
 2. Zainstaluj wymagane zależności:
+
 ```bash
-pip install -r requirements.txt
+pip install flask
+pip install pywebview
+pip install bcrypt
+pip install fpdf
+pip install matplotlib
 ```
+
 3. Uruchom aplikację:
+
 ```bash
-python main.py
+python py .\src\server\main.py
 ```
 
 ## Funkcjonalności
 
 ### 1. System zarządzania użytkownikami
+
 - Bezpieczna rejestracja i logowanie
 - Szyfrowanie haseł
 - Możliwość resetowania hasła
 
 ### 2. Zarządzanie wydatkami
+
 - Dodawanie wydatków z szczegółowymi informacjami
 - Kategoryzacja wydatków
 - Możliwość dodawania notatek
-- Edycja i usuwanie wpisów
+- Usuwanie wpisów
 
 ### 3. Zarządzanie przychodami
+
 - Rejestrowanie różnych źródeł przychodów
 - Automatyczne sumowanie
 - Historia przychodów
 
 ### 4. System kategorii
+
 Predefiniowane kategorie:
+
 - Transport 🚗
 - Zdrowie 🏥
 - Edukacja 📚
@@ -66,7 +86,9 @@ Predefiniowane kategorie:
 - Wspólne 👥
 
 ### 5. Obsługa walut
+
 Wspierane waluty:
+
 - PLN (złoty polski)
 - EUR (euro)
 - USD (dolar amerykański)
@@ -74,7 +96,9 @@ Wspierane waluty:
 ## Instrukcja użytkowania
 
 ### Pierwsze kroki
+
 1. **Rejestracja**
+
    ```
    Menu główne -> Rejestracja -> Wypełnij formularz
    ```
@@ -85,12 +109,15 @@ Wspierane waluty:
    ```
 
 ### Podstawowe operacje
+
 1. **Dodawanie wydatku**
+
    ```
    Menu główne -> Dodaj wydatek -> Wypełnij formularz
    ```
 
 2. **Dodawanie przychodu**
+
    ```
    Menu główne -> Dodaj przychód -> Wypełnij formularz
    ```
@@ -103,17 +130,20 @@ Wspierane waluty:
 ## Specyfikacja techniczna
 
 ### Architektura systemu
+
 - Frontend: Webview/Flask
 - Backend: Python
 - Baza danych: JSON
 - Szyfrowanie: bcrypt
 
 ### Zabezpieczenia
+
 - Szyfrowanie haseł
 - Walidacja danych wejściowych
 - Automatyczne kopie zapasowe
 
 ### Format danych
+
 - Wszystkie dane przechowywane są w formacie JSON
 - Automatyczna walidacja integralności danych
 - Regularne kopie zapasowe
@@ -121,11 +151,15 @@ Wspierane waluty:
 ## FAQ
 
 ### Czy mogę eksportować swoje dane?
+
 Tak, dane można eksportować do formatu CSV lub JSON.
 
 ### Czy moje dane są bezpieczne?
+
 Tak, wszystkie dane są przechowywane lokalnie na Twoim komputerze i zabezpieczone szyfrowaniem.
 
 # Personalny-Asystent-Budzetu-Domowego-PWI2024
+
 Oficjalne repozytorium projektu programistycznego z przedmiotu PWI grupy Z7.
+
 # Personalny Asystent Budżetu Domowego
