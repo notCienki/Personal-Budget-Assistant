@@ -10,7 +10,7 @@ from server import app
 
 # Uruchom Flask w osobnym wątku
 def start_server():
-    app.run(port=5000, debug=False, use_reloader=False)
+    app.run(port=5000, debug=True, use_reloader=False)
 
 threading.Thread(target=start_server, daemon=True).start()
 

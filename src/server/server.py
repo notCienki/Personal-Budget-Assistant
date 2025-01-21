@@ -16,7 +16,10 @@ app = Flask(__name__, static_folder='../GUI', template_folder='../GUI')
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    mode = 'register'
+    if is_user():
+        mode = 'login'
+    return render_template('index.html', mode=mode)
 
 @app.route('/currency')
 def currency():
@@ -254,6 +257,55 @@ def get_incomes_this_month():
         return jsonify({"success": False, "message": str(e)}), 500
 
 
+from data.store.users_repository import is_user, login, register
+
+@app.route('/api/login', methods=['POST'])
+def login_user():
+    try:
+        data = request.json
+        print(data, file=sys.stderr)
+        username = data['login']
+        password = data['password']
+        
+ 
+        if login(username, password):
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Invalid username or password'}), 401
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+
+@app.route('/api/register', methods=['POST'])
+def register_user():
+    try:
+        data = request.json
+        login = data['login']
+        name = data['name']
+        last_name = data['last_name']
+        email = data['email']
+        password = data['password']
+        if register({
+            "login": login,
+            "name": name,
+            "last_name": last_name,
+            "email": email,
+            "password": password
+        }):
+            return jsonify({'success': True})
+        # register({
+        #     "login": "admin",
+        #     "name": "admin",
+        #     "last_name": "admin",
+        #     "email": "admin",
+        #     "password": "admin"})
+        # return jsonify({'success': True})
+
+        
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 
 
 # Nowa trasa do generowania raportu
@@ -267,6 +319,9 @@ def generate_report():
         return jsonify({"success": True, "message": "Raport został wygenerowany."})
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
+
+
+
 
 
 if __name__ == '__main__':

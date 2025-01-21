@@ -1,4 +1,5 @@
 import json
+import sys
 import bcrypt
 
 user_path = "src/data/user.json"
@@ -19,6 +20,7 @@ def get_user():
 
 # data -> false | user_data   Jeśli logowanie się nie powiedzie false, a jak się uda true
 def register(data):
+
     if "login" not in data:
         return False
     
@@ -33,15 +35,18 @@ def register(data):
     
     if "password" not in data:
         return False
+    
+    print(user_data, file=sys.stderr)
     password_bytes = data['password'].encode('utf-8')   
     user_data['user'] = data
     hashed_password = bcrypt.hashpw(password_bytes, bcrypt.gensalt()).decode('utf-8')
     user_data['user']['password'] = hashed_password
-
+    
+    print(user_data, file=sys.stderr)
 
     user_file.seek(0)
     json.dump(user_data, user_file)
-
+    user_file.truncate()
     return True
 
 # login, password -> bool
@@ -59,4 +64,3 @@ def login(login, password):
         return False
 
     return True
-
