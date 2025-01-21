@@ -4,7 +4,7 @@ from flask import Flask, render_template, send_file, jsonify, send_from_director
 from datetime import datetime
 
 from flask import request, jsonify
-from data.store.finance_repository import add_income
+from data.store.finance_repository import add_income, get_month_income, remove_income_by_id
 
 # Dodaj katalog główny projektu (src) do sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -12,6 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.generate_pdf import generate_pdf
 
 app = Flask(__name__, static_folder='../GUI', template_folder='../GUI')
+
 
 @app.route('/')
 def home():
@@ -34,6 +35,14 @@ def favicon():
 @app.route('/<path:filename>')
 def static_files(filename):
     return send_from_directory(app.static_folder, filename)
+
+@app.route('/api/incomes/<int:id>', methods=['DELETE'])
+def delete_income(id):
+    try:
+        remove_income_by_id(id)
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/add_income', methods=['POST'])
 def add_income_route():
@@ -152,7 +161,73 @@ def get_expenses_last_30_days():
         return jsonify({"success": False, "message": str(e)}), 500
 
 
-from data.store.finance_repository import get_all_incomes
+from data.store.finance_repository import get_all_incomes, remove_spending_by_id
+
+
+@app.route('/api/expenses/<int:expense_id>', methods=['DELETE'])
+def delete_expense(expense_id):
+    try:
+        # Delete expense from database
+        remove_spending_by_id(expense_id)
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@app.route('/api/incomes/this_month/list', methods=['GET'])
+def get_incomes_this_month_list():
+    """
+    Return the list of incomes in the current month
+    """
+    try:
+        now = datetime.now()
+
+# Get the current year
+        current_year = now.year
+
+# Get the current month
+        current_month = now.month
+        incomes = get_month_income(current_month,current_year)  
+        # Pobierz wszystkie przychody
+       
+        
+        # Przygotuj dane do wysłania
+        data = {
+            'incomes': incomes
+        }
+        
+        return jsonify(data)
+    except Exception as e:
+        print(f"Błąd podczas obliczania przychodów: {e}")
+        return jsonify({"error": str(e)}), 500
+    
+
+@app.route('/api/expenses/this_month/list', methods=['GET'])
+def get_expenses_this_month_list():
+    """
+    Return the list of incomes in the current month
+    """
+    try:
+        now = datetime.now()
+
+# Get the current year
+        current_year = now.year
+
+# Get the current month
+        current_month = now.month
+        expenses = get_month_spending(current_month,current_year)  
+        # Pobierz wszystkie przychody
+       
+        
+        # Przygotuj dane do wysłania
+        data = {
+            'expenses': expenses
+        }
+        
+        return jsonify(data)
+    except Exception as e:
+        print(f"Błąd podczas obliczania przychodów: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/incomes/this_month', methods=['GET'])
 def get_incomes_this_month():
