@@ -61,16 +61,24 @@ python py .\src\server\main.py
 
 - Dodawanie wydatków z szczegółowymi informacjami
 - Kategoryzacja wydatków
+- Historia wydatków
 - Możliwość dodawania notatek
 - Usuwanie wpisów
 
 ### 3. Zarządzanie przychodami
 
 - Rejestrowanie różnych źródeł przychodów
-- Automatyczne sumowanie
 - Historia przychodów
+- Usuwanie wpisów
 
-### 4. System kategorii
+### 4. Generowanie raportu
+
+- Podsumowanie przychodów i wydatków
+- Wyliczenie salda końcowego
+- Szczegółowy wykaz przychodów
+- Szczegółowy wykaz wydatków
+
+### 5. System kategorii
 
 Predefiniowane kategorie:
 
@@ -89,9 +97,16 @@ Predefiniowane kategorie:
 
 Wspierane waluty:
 
-- PLN (złoty polski)
+- PLN (złoty polski) 
 - EUR (euro)
 - USD (dolar amerykański)
+- GBP (brytyjski funt)
+- JPY (jen)
+- CNY (renminbi)
+- AUD (dolar australijski)
+- CAD (dolar kanadyjski)
+- CHF (frank szwajcarski)
+- SEK (korona szwedzka)
 
 ## Instrukcja użytkowania
 
@@ -113,19 +128,45 @@ Wspierane waluty:
 1. **Dodawanie wydatku**
 
    ```
-   Menu główne -> Dodaj wydatek -> Wypełnij formularz
+   Strona główna -> Wypełnij formularz -> Dodaj wydatek
    ```
 
 2. **Dodawanie przychodu**
 
    ```
-   Menu główne -> Dodaj przychód -> Wypełnij formularz
+   Przychody -> Wypełnij formularz -> Dodaj przychód
    ```
 
-3. **Przeglądanie historii**
+3. **Usuwanie wydatku**
    ```
-   Menu główne -> Historia -> Wybierz zakres dat
+   Strona główna -> Wydatki z bieżącego miesiąca -> Usuń 
    ```
+
+4. **Usuwanie przychodu**
+   ```
+   Przychody -> Przychody z bieżącego miesiąca -> Usuń 
+   ```
+
+5. **Dodawanie kategorii**
+   ```
+   Zarządzanie kategoriami -> Dodaj nową kategorię -> Podaj nazwę kategorii -> Dodaj
+   ```
+  
+6. **Usuwanie kategorii**
+   ```
+   Zarządzanie kategoriami -> Istniejące kategorie -> Usuń 
+   ```
+
+7. **Przeliczanie walut**
+   ```
+   Przelicznik walut -> Wprowadź kwotę -> Wybierz waluty -> Przelicz
+   ```
+
+8. **Generowanie raportu**
+   ```
+   Przychody-> Przegląd przychodów -> Wygeneruj raport z ostatniego miesiąca 
+   ```
+   
 
 ## Specyfikacja techniczna
 
