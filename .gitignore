@@ -3,3 +3,4 @@
 
 # Ignorowanie plików konfiguracyjnych VSCode
 .vscode/
+*.pkl
