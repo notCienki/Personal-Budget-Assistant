@@ -198,9 +198,3 @@ Tak, dane można eksportować do formatu CSV lub JSON.
 ### Czy moje dane są bezpieczne?
 
 Tak, wszystkie dane są przechowywane lokalnie na Twoim komputerze i zabezpieczone szyfrowaniem.
-
-# Personalny-Asystent-Budzetu-Domowego-PWI2024
-
-Oficjalne repozytorium projektu programistycznego z przedmiotu PWI grupy Z7.
-
-# Personalny Asystent Budżetu Domowego
