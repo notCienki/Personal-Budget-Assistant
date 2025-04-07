@@ -1,218 +1,166 @@
-# Personalny-Asystent-Budzetu-Domowego-PWI2024
+# Personal Home Budget Assistant
 
-Oficjalne repozytorium projektu programistycznego z przedmiotu PWI grupy Z7.
+<div align="center">
+  <img src="static/images/Login.png" alt="Personal Budget Assistant" width="500">
+  <p><em>Your personal finance companion for intelligent budget management</em></p>
+</div>
 
-# Personalny Asystent Budżetu Domowego
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Flask](https://img.shields.io/badge/flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Spis treści
+## Table of Contents
 
-1. [Wprowadzenie](#wprowadzenie)
-2. [Instalacja](#instalacja)
-3. [Funkcjonalności](#funkcjonalności)
-4. [Instrukcja użytkowania](#instrukcja-użytkowania)
-5. [Specyfikacja techniczna](#specyfikacja-techniczna)
-6. [FAQ](#faq)
+1. [Introduction](#introduction)
+2. [Key Features](#key-features)
+3. [Installation](#installation)
+4. [Usage](#usage)
+5. [System Architecture](#system-architecture)
+6. [Data Management](#data-management)
+7. [Security](#security)
+8. [Application Preview](#application-preview)
+9. [Development Team](#development-team)
+10. [License](#license)
+11. [Documentation](#documentation)
 
-## Wprowadzenie
+## Introduction
 
-Personalny Asystent Budżetu Domowego to zaawansowane narzędzie do zarządzania finansami osobistymi, które umożliwia:
+The Personal Home Budget Assistant is a comprehensive desktop application designed to help users manage their financial lives effectively. Built with a modern stack of Python and Flask, the application offers a seamless and secure way to track expenses, monitor income, and gain insights into spending patterns. With features like automatic currency conversion and detailed financial reporting, our Budget Assistant empowers users to make informed financial decisions.
 
-- Śledzenie wydatków i przychodów
-- Kategoryzację transakcji
-- Automatyczne przeliczanie walut
-- Generowanie raportów finansowych
-- Bezpieczne przechowywanie danych
+## Key Features
 
-## Instalacja
+### 🔒 User Management
+- Secure account registration and authentication
+- Password encryption with bcrypt
+- User profile management
 
-### Wymagania systemowe
+### 💰 Financial Tracking
+- **Expense Management**: Track all expenses with detailed categorization
+- **Income Recording**: Monitor multiple income streams
+- **Transaction History**: Full historical view of financial activities
+- **Category System**: Organize expenses into customizable categories
 
-- Python 3.8 lub nowszy
-- 20 MB wolnego miejsca na dysku
+### 📊 Analysis & Reporting
+- **Financial Reports**: Generate detailed PDF reports of your finances
+- **Visualizations**: Visual representations of spending patterns
+- **Monthly Summaries**: Quick overview of monthly financial activities
 
-### Proces instalacji
+### 🌏 Currency Support
+- **Multi-Currency Support**: Track finances in various currencies
+- **Real-Time Conversion**: Currency converter with up-to-date exchange rates
+- **Supports 10+ Major Currencies**: Including PLN, EUR, USD, GBP, and more
 
-1. Pobierz aplikację z repozytorium
-2. Zainstaluj wymagane zależności:
+## Installation
 
-```bash
-pip install flask
-pip install pywebview
-pip install bcrypt
-pip install fpdf
-pip install matplotlib
-```
+### Prerequisites
+- Python 3.8 or newer
+- 20 MB of free disk space
+- Internet connection (for initial setup and currency conversion features)
 
-3. Uruchom aplikację:
+### Setup Process
 
-```bash
-python py .\src\server\main.py
-```
-
-## Funkcjonalności
-
-### 1. System zarządzania użytkownikami
-
-- Bezpieczna rejestracja i logowanie
-- Szyfrowanie haseł
-
-### 2. Zarządzanie wydatkami
-
-- Dodawanie wydatków z szczegółowymi informacjami
-- Kategoryzacja wydatków
-- Historia wydatków
-- Możliwość dodawania notatek
-- Usuwanie wpisów
-
-### 3. Zarządzanie przychodami
-
-- Rejestrowanie różnych źródeł przychodów
-- Historia przychodów
-- Usuwanie wpisów
-
-### 4. Generowanie raportu
-
-- Podsumowanie przychodów i wydatków
-- Wyliczenie salda końcowego
-- Szczegółowy wykaz przychodów
-- Szczegółowy wykaz wydatków
-
-### 5. System kategorii
-
-Predefiniowane kategorie:
-
-- Transport 🚗
-- Zdrowie 🏥
-- Edukacja 📚
-- Ubrania 👔
-- Jedzenie 🍎
-- Zakupy 🛒
-- Rozrywka 🎮
-- Rachunki 📄
-- Inne ❓
-- Wspólne 👥
-
-### 5. Obsługa walut
-
-Wspierane waluty:
-
-- PLN (złoty polski) 
-- EUR (euro)
-- USD (dolar amerykański)
-- GBP (brytyjski funt)
-- JPY (jen)
-- CNY (renminbi)
-- AUD (dolar australijski)
-- CAD (dolar kanadyjski)
-- CHF (frank szwajcarski)
-- SEK (korona szwedzka)
-
-## Instrukcja użytkowania
-
-### Rejestracja i logowanie
-
-1. **Rejestracja**
-
-   ```
-   Po wejściu do aplikacji po raz pierwszy, uzupełnij formularz rejestracyjny i kliknij przycisk Zarejestruj.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/Personalny-Asystent-Budzetu-Domowego-PWI2024.git
+   cd Personalny-Asystent-Budzetu-Domowego-PWI2024
    ```
 
-2. **Logowanie**
-   ```
-   Po każdorazowym otwarciu aplikacji wpisz swój login oraz hasło.
-   ```
-
-### Podstawowe operacje
-
-1. **Dodawanie wydatku**
-
-   ```
-   Strona główna -> Wypełnij formularz -> Dodaj wydatek
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
    ```
 
-2. **Dodawanie przychodu**
-
-   ```
-   Przychody -> Wypełnij formularz -> Dodaj przychód
-   ```
-
-3. **Usuwanie wydatku**
-   ```
-   Strona główna -> Wydatki z bieżącego miesiąca -> Usuń 
+3. **Launch the application**
+   ```bash
+   python main.py
    ```
 
-4. **Usuwanie przychodu**
-   ```
-   Przychody -> Przychody z bieżącego miesiąca -> Usuń 
-   ```
+## Usage
 
-5. **Dodawanie kategorii**
-   ```
-   Zarządzanie kategoriami -> Dodaj nową kategorię -> Podaj nazwę kategorii -> Dodaj
-   ```
-  
-6. **Usuwanie kategorii**
-   ```
-   Zarządzanie kategoriami -> Istniejące kategorie -> Usuń 
-   ```
+### Getting Started
 
-7. **Przeliczanie walut**
-   ```
-   Przelicznik walut -> Wprowadź kwotę -> Wybierz waluty -> Przelicz
-   ```
+1. **Registration and Login**
+   - When you first open the application, you'll be presented with a login/registration screen
+   - Create an account or log in to access the dashboard
 
-8. **Generowanie raportu**
-   ```
-   Przychody-> Przegląd przychodów -> Wygeneruj raport z ostatniego miesiąca 
-   ```
-   
+2. **Dashboard Navigation**
+   - **Expenses**: Track and manage your expenses
+   - **Income**: Record and view your income sources
+   - **Categories**: Customize your expense categories
+   - **Currency Converter**: Convert between supported currencies
+   - **Reports**: Generate financial reports for selected periods
 
-## Specyfikacja techniczna
+### Expense Management
+- Add expenses with detailed information including date, amount, category, and notes
+- View expenses by month or custom date ranges
+- Delete or edit existing expense entries
 
-### Architektura systemu
+### Income Tracking
+- Record income from various sources with detailed descriptions
+- View income history with filtering options
+- Monitor total monthly income
 
-- Frontend: Webview/Flask
-- Backend: Python
-- Baza danych: JSON
-- Szyfrowanie: bcrypt
+### Generating Reports
+- Access the reports section from the dashboard
+- Select your desired time period
+- Generate a comprehensive PDF report with income, expenses, and balance information
 
-### Zabezpieczenia
+## System Architecture
 
-- Szyfrowanie haseł
-- Walidacja danych wejściowych
+The application is built on a robust architecture combining:
 
-### Format danych
+- **Frontend**: Modern HTML/CSS/JS interface rendered through Flask templates
+- **Backend**: Python with Flask for server-side processing
+- **Data Storage**: JSON-based file system for storing user data and settings
+- **Security Layer**: Encryption and password hashing for secure data management
 
-- Wszystkie dane przechowywane są w formacie JSON
+## Data Management
 
-## FAQ
+### Storage Format
+All data is stored locally in structured JSON format:
+- User profiles and authentication data
+- Financial transactions (expenses and income)
+- Categories and preferences
+- Exchange rate data
 
-### Czy mogę eksportować swoje dane?
+### Data Integrity
+- Automatic data backup
+- Input validation to prevent data corruption
 
-Tak, dane można eksportować do formatu PDF.
+## Security
 
-### Czy moje dane są bezpieczne?
+The application prioritizes security through:
+- Password hashing using bcrypt
+- Local data storage for enhanced privacy
+- Input sanitization to prevent injection attacks
+- Secure session management
 
-Tak, wszystkie dane są przechowywane lokalnie na Twoim komputerze i zabezpieczone szyfrowaniem.
+## Application Preview
 
-### Podgląd Aplikacji
+<div align="center">
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+    <img src="static/images/Wydatki.png" alt="Expenses" width="400">
+    <img src="static/images/Przychody.png" alt="Income" width="400">
+    <img src="static/images/Kategorie.png" alt="Categories" width="400">
+    <img src="static/images/Kantor.png" alt="Currency Converter" width="400">
+  </div>
+</div>
 
-![Logowanie](images/Login.png)
+## Development Team
 
-![Wydatki](images/Wydatki.png)
+- **Karol Nowocień**
+- **Jakub Sternik**
+- **Mateusz Kita**
+- **Tobiasz Adamczyk**
+- **Jan Sularz**
+- **Jan Behrendt**
 
-![Przychody](images/Przychody.png)
+## Documentation
 
-![Kategorie](images/Kategorie.png)
+For detailed technical documentation and user guides, please refer to the [TECHNICAL.md](docs/TECHNICAL.md) file.
 
-![Przeliczanie Walut](images/Kantor.png)
+---
 
-### Skład zespołu :  
-- Karol Nowocień
-- Jakub Sternik
-- Mateusz Kita
-- Tobiasz Adamczyk
-- Jan Sularz
-- Jan Behrendt
-  
-#### © 2025 Personal Home Budget Assistant
+<div align="center">
+  <p>© 2025 Personal Home Budget Assistant</p>
+</div>

@@ -4,15 +4,15 @@ from fpdf import FPDF
 from datetime import datetime
 
 
-font_path = os.path.abspath('DejaVuSans.ttf')
+font_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../static/fonts/DejaVuSans.ttf'))
 # font_path = "https://cdn.jsdelivr.net/npm/dejavu-sans@1.0.0/css/dejavu-sans.min.css"
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from data.store import finance_repository as fr
+from src.repositories import finance_repository as fr
 
-def generate_pdf(month, year):
-    spending = fr.get_month_spending(month, year)
-    income = fr.get_month_income(month, year)
+def generate_pdf(month, year, user_id=1):
+    spending = fr.get_month_spending(month, year, user_id)
+    income = fr.get_month_income(month, year, user_id)
 
     income_summary = 0
     spending_summary = 0
@@ -85,4 +85,7 @@ def generate_pdf(month, year):
     output_dir = os.path.join(os.path.dirname(__file__), '..', 'output')
     os.makedirs(output_dir, exist_ok=True)
 
-    pdf.output(os.path.join(output_dir, f"raport_{month}_{year}.pdf"))
+    # Dodajemy ID użytkownika do nazwy pliku, aby uniknąć kolizji
+    pdf.output(os.path.join(output_dir, f"raport_{month}_{year}_user{user_id}.pdf"))
+    
+    return os.path.join(output_dir, f"raport_{month}_{year}_user{user_id}.pdf")

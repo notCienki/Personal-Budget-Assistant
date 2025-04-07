@@ -3,13 +3,26 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import os
 
-def wczytaj_dane(finance_path, categories_path):
+def wczytaj_dane(finance_path, categories_path, user_id=1):
     with open(finance_path, 'r') as file:
         finance_data = json.load(file)
     with open(categories_path, 'r') as file:
         categories_data = json.load(file)
-    categories_dict = {str(category['id']): category['name'] for category in categories_data['categories']}
-    return finance_data, categories_dict
+        
+    # Filter categories by user_id
+    user_categories = [category for category in categories_data.get('categories', []) if category.get('user_id') == user_id]
+    categories_dict = {str(category['id']): category['name'] for category in user_categories}
+    
+    # Filter finances by user_id
+    user_spending = [item for item in finance_data.get('spending', []) if item.get('user_id') == user_id]
+    user_incomes = [item for item in finance_data.get('incomes', []) if item.get('user_id') == user_id]
+    
+    filtered_finance_data = {
+        'spending': user_spending,
+        'incomes': user_incomes
+    }
+    
+    return filtered_finance_data, categories_dict
 
 
 def filtruj_dane(dane, start_date, end_date):
@@ -81,7 +94,6 @@ def generuj_wykres_kolumnowy_wydatkow(dane, start_date, end_date):
     plt.title(f'Wydatki\n{start_date} do {end_date}')
     plt.legend()
 
-
     interval = max(1, len(all_months) // 10)
     plt.xticks(ticks=range(0, len(all_months), interval), labels=[all_months[i] for i in range(0, len(all_months), interval)], rotation=45)
 
@@ -118,8 +130,8 @@ def generuj_wykres_kolumnowy_przychodow(dane, start_date, end_date):
     plt.savefig(f'przychody_{start_date}_do_{end_date}.png')
     plt.show()
 
-def rysuj_wykresy(start_date, end_date, wykres_typ):
-    finance_data, categories_data = wczytaj_dane('src/data/finance.json', 'src/data/categories.json')
+def rysuj_wykresy(start_date, end_date, wykres_typ, user_id=1):
+    finance_data, categories_data = wczytaj_dane('data/finances.json', 'data/user_categories.json', user_id)
     dane = filtruj_dane(finance_data, start_date, end_date)
 
     if wykres_typ == 'kolowy':
@@ -132,6 +144,6 @@ def rysuj_wykresy(start_date, end_date, wykres_typ):
         print("Nieznany typ wykresu. Dostępne typy: 'kolowy', 'kolumnowy_wydatki', 'kolumnowy_przychody'")
 
 if __name__ == "__main__":
-    rysuj_wykresy('2023-01-01', '2023-12-02', 'kolowy')
-    rysuj_wykresy('2023-01-01', '2023-12-02', 'kolumnowy_wydatki')
-    rysuj_wykresy('2023-01-01', '2023-12-02', 'kolumnowy_przychody')
+    rysuj_wykresy('2023-01-01', '2023-12-02', 'kolowy', 1)
+    rysuj_wykresy('2023-01-01', '2023-12-02', 'kolumnowy_wydatki', 1)
+    rysuj_wykresy('2023-01-01', '2023-12-02', 'kolumnowy_przychody', 1)

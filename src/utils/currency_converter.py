@@ -1,8 +1,8 @@
 import json
 import os
 
-EXCHANGE_RATES_PATH = "src/data/exchange_rates.json"
-BASE_CURRENCY_PATH = "src/data/base_currency.json"  # Zaktualizowana ścieżka
+EXCHANGE_RATES_PATH = "data/exchange_rates.json"
+BASE_CURRENCY_PATH = "data/base_currency.json"
 
 def load_exchange_rates():
 
