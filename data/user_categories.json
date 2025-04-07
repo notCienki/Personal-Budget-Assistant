@@ -1,0 +1,48 @@
+{
+  "users": {
+    "1": {
+      "categories": [
+        {
+          "id": 1,
+          "name": "Transport"
+        },
+        {
+          "id": 2,
+          "name": "Zdrowie"
+        },
+        {
+          "id": 3,
+          "name": "Edukacja"
+        },
+        {
+          "id": 4,
+          "name": "Ubrania"
+        },
+        {
+          "id": 5,
+          "name": "Jedzenie"
+        },
+        {
+          "id": 6,
+          "name": "Zakupy"
+        },
+        {
+          "id": 7,
+          "name": "Rozrywka"
+        },
+        {
+          "id": 8,
+          "name": "Rachunki"
+        },
+        {
+          "id": 9,
+          "name": "Inne"
+        },
+        {
+          "id": 10,
+          "name": "Wsp\u00f3lne"
+        }
+      ]
+    }
+  }
+}
