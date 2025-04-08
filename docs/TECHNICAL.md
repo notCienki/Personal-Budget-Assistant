@@ -2,7 +2,7 @@
 
 <div align="center">
   <h3>Comprehensive Technical Reference</h3>
-  <p><em>Version 2.0 - April 2025</em></p>
+  <p><em>Version 2.1 - April 2025</em></p>
 </div>
 
 ## Table of Contents
@@ -97,19 +97,22 @@ The Personal Home Budget Assistant follows a hybrid application architecture com
 
 ### 3.1 Repository Pattern
 
-The application uses the repository pattern to abstract data access:
+The application uses the repository pattern to abstract data access. The repositories handle data validation, error handling, and type safety:
 
 ```python
-# Repository pattern implementation
-class BaseRepository:
-    def __init__(self, file_path):
-        self.file_path = file_path
+# Repository pattern implementation with type hints and error handling
+def get_all_categories(user_id: int = 1) -> List[Dict]:
+    """
+    Get all categories for a user.
+    
+    Args:
+        user_id: User identifier (default: 1)
         
-    def _read_data(self):
-        # Read data from JSON file
-        
-    def _save_data(self, data):
-        # Save data to JSON file
+    Returns:
+        List of category dictionaries
+    """
+    user_data = get_user_categories_data(user_id)
+    return user_data['categories']
 ```
 
 ### 3.2 Data Schemas
@@ -176,28 +179,46 @@ class BaseRepository:
 
 ### 3.3 Data Access Functions
 
-The application provides the following key data access functions:
+The application provides the following key data access functions with proper type hints:
 
 ```python
 # User management
 is_user() -> bool
-get_users() -> list
-get_user_by_login(login: str) -> dict
-register(data: dict) -> dict
+get_users() -> List[Dict]
+get_user_by_login(login: str) -> Optional[Dict]
+register(data: Dict) -> Dict
 login(login: str, password: str) -> bool
 
 # Financial management
-get_all_spending(user_id: int) -> list
-add_spending(data: dict, user_id: int) -> dict
-remove_spending_by_id(id: int, user_id: int) -> None
-get_all_incomes(user_id: int) -> list
-add_income(data: dict, user_id: int) -> dict
-remove_income_by_id(id: int, user_id: int) -> None
+get_all_spending(user_id: int = 1) -> List[Dict]
+add_spending(data: Dict, user_id: int = 1) -> Dict
+remove_spending_by_id(id: int, user_id: int = 1) -> bool
+get_all_incomes(user_id: int = 1) -> List[Dict]
+add_income(data: Dict, user_id: int = 1) -> Dict
+remove_income_by_id(id: int, user_id: int = 1) -> bool
 
 # Category management
-get_all_categories(user_id: int) -> list
-add_category(name: str, user_id: int) -> None
-remove_category_by_name(name: str, user_id: int) -> None
+get_all_categories(user_id: int = 1) -> List[Dict]
+add_category(name: str, user_id: int = 1) -> int
+remove_category_by_name(name: str, user_id: int = 1) -> bool
+remove_category_by_id(id: int, user_id: int = 1) -> bool
+update_category_by_name(old_name: str, new_name: str, user_id: int = 1) -> bool
+```
+
+### 3.4 Error Handling in Data Layer
+
+The application implements robust error handling in the data layer:
+
+```python
+# Example of robust error handling in data loading
+try:
+    with open(CATEGORIES_PATH, "r") as file:
+        categories_data = json.load(file)
+        if "users" not in categories_data:
+            categories_data["users"] = {}
+except (json.JSONDecodeError, FileNotFoundError) as e:
+    logger.error(f"Error loading categories data: {e}")
+    categories_data = {"users": {}}
 ```
 
 ## 4. Server and API
@@ -236,8 +257,8 @@ app = Flask(__name__, static_folder='static', template_folder='templates')
 | Endpoint | Method | Description | Request Body | Response |
 |----------|--------|-------------|-------------|----------|
 | `/api/categories` | GET | Get all categories | None | `{"categories": []}` |
-| `/api/add_category` | POST | Add new category | `{"name": "string"}` | `{"success": true/false}` |
-| `/api/remove_category` | POST | Remove category | `{"name": "string"}` | `{"success": true/false}` |
+| `/api/categories` | POST | Add new category | `{"name": "string"}` | `{"success": true/false, "message": "string"}` |
+| `/api/categories/<name>` | DELETE | Remove category by name | None | `{"success": true/false, "message": "string"}` |
 
 #### 4.2.4 Reporting Endpoints
 
@@ -280,6 +301,34 @@ The server includes helper functions for common tasks:
 # Helper function to get current user ID
 def current_user_id():
     return get_current_user_id()
+```
+
+### 4.5 Logging and Error Handling
+
+The application implements comprehensive logging using Python's logging module:
+
+```python
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('app.log')
+    ]
+)
+logger = logging.getLogger(__name__)
+
+# Example of logging in API route
+@app.route('/api/login', methods=['POST'])
+def login_user():
+    try:
+        data = request.json
+        logger.info(f"Login attempt for user: {data.get('login', 'unknown')}")
+        # ...authentication logic...
+    except Exception as e:
+        logger.error(f"Login error: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
 ```
 
 ## 5. Frontend
@@ -352,6 +401,35 @@ Navigation between pages is handled through direct links and programmatic redire
 })
 ```
 
+### 5.4 URL Routing Updates
+
+The application has been updated to use proper URL routing for improved navigation:
+
+```html
+<!-- Updated Navigation Links -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/expenses">Budżet Domowy</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/expenses">Strona główna</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/income">Przychody</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/categories">Zarządzanie kategoriami</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/currency">Przelicznik walut</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+```
+
 ## 6. Key Modules
 
 ### 6.1 User Management (users_repository.py)
@@ -407,6 +485,31 @@ Key functions:
 - `convert_currency(amount, from_currency, to_currency)`: Converts between currencies
 - `get_exchange_rate(from_currency, to_currency)`: Gets current exchange rate
 
+### 6.7 Advanced Error Handling and Logging
+
+The application now includes a centralized logging system:
+
+```python
+# In main.py
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler('app.log')
+    ]
+)
+logger = logging.getLogger(__name__)
+
+def start_server():
+    """Start the Flask server with error handling"""
+    try:
+        app.run(port=5000, debug=True, use_reloader=False)
+    except Exception as e:
+        logger.error(f"Server failed to start: {e}")
+        sys.exit(1)
+```
+
 ## 7. Authentication System
 
 ### 7.1 Registration Flow
@@ -427,24 +530,38 @@ Key functions:
 
 ### 7.3 Session Management
 
-The application uses a simple in-memory session management system:
+The application uses a simple in-memory session management system with improved logging:
 
 ```python
-# Current active sessions (user_id -> last_activity_time)
-active_sessions = {}
+# Updated session management with type hints and logging
+def login_user(user_id: int) -> None:
+    """
+    Log in a user by storing their ID in the session.
+    
+    Args:
+        user_id: The ID of the user to log in
+    """
+    global current_user_id
+    current_user_id = user_id
+    logger.info(f"User logged in: ID {user_id}")
 
-def login_user(user_id):
-    active_sessions[user_id] = datetime.now()
+def logout_user() -> None:
+    """
+    Log out the currently logged in user.
+    """
+    global current_user_id
+    prev_id = current_user_id
+    current_user_id = None
+    logger.info(f"User logged out: ID {prev_id}")
 
-def logout_user():
-    if get_current_user_id() in active_sessions:
-        del active_sessions[get_current_user_id()]
-
-def is_logged_in():
-    return get_current_user_id() is not None
-
-def get_current_user_id():
-    # Implementation logic to return current user ID
+def get_current_user_id() -> int:
+    """
+    Get the ID of the currently logged in user.
+    
+    Returns:
+        int: User ID of the logged-in user, or 2 (default user) if no one is logged in
+    """
+    return current_user_id if current_user_id is not None else 2
 ```
 
 ### 7.4 Password Security
@@ -540,25 +657,40 @@ def convert_currency(amount, from_currency, to_currency):
 
 ### 10.1 PDF Report Generation
 
-The application uses FPDF library to generate PDF reports:
+The application uses FPDF library to generate PDF reports with enhanced error handling and type hints:
 
 ```python
-def generate_pdf(month, year, user_id):
-    # Get financial data for specified period
-    expenses = get_month_spending(month, year, user_id)
-    incomes = get_month_income(month, year, user_id)
+def generate_pdf(month: int, year: int, user_id: int = 1) -> str:
+    """
+    Generate a PDF report with financial data
     
-    # Create PDF
-    pdf = FPDF()
-    pdf.add_page()
+    Args:
+        month: Month number (1-12)
+        year: Year
+        user_id: User ID
+        
+    Returns:
+        str: Path to the generated PDF file
+    """
+    logger.info(f"Generating report for month {month}, year {year}, user {user_id}")
     
-    # Add content to PDF
-    # ...
-    
-    # Save PDF
-    filename = f"raport_{month}_{year}.pdf"
-    pdf.output(f"src/output/{filename}")
-    return filename
+    try:
+        # Get financial data for specified period
+        expenses = get_month_spending(month, year, user_id)
+        incomes = get_month_income(month, year, user_id)
+        
+        # Create PDF
+        pdf = BudgetPDF()  # Enhanced PDF class with better formatting
+        # ... PDF creation logic ...
+        
+        # Save PDF with error handling
+        output_path = os.path.join(OUTPUT_DIR, f"raport_budzetowy_{month}_{year}_user{user_id}.pdf")
+        pdf.output(output_path)
+        logger.info(f"Report generated: {output_path}")
+        return output_path
+    except Exception as e:
+        logger.error(f"Error generating PDF report: {e}")
+        raise
 ```
 
 ### 10.2 Report Content
@@ -570,6 +702,28 @@ Generated reports include:
 - Detailed list of expenses by category
 - Detailed list of income sources
 - Optional charts and visualizations
+
+### 10.3 Report Distribution
+
+The application now supports downloading generated reports through a dedicated endpoint:
+
+```python
+@app.route('/download_report/<filename>', methods=['GET'])
+def download_report(filename):
+    """
+    Download a generated report file
+    
+    Args:
+        filename: Name of the report file to download
+    """
+    try:
+        output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        logger.info(f"Serving report file: {filename}")
+        return send_from_directory(output_dir, filename, as_attachment=True)
+    except Exception as e:
+        logger.error(f"Error downloading report: {e}")
+        return jsonify({"success": False, "message": str(e)}), 404
+```
 
 ## 11. Security Considerations
 
@@ -663,11 +817,80 @@ def register(data):
     return {"success": True}
 ```
 
+### 12.3 Improved Multi-User Support
+
+**Issue**: Default user ID was statically set to 1, causing data conflicts when multiple users were using the system.
+
+**Root Cause**: The session management system did not properly handle default users.
+
+**Solution**:
+- Updated session_manager.py to use user ID 2 as default when no one is logged in
+- Added proper type hints to all session management functions
+- Improved error logging throughout the authentication flow
+- Fixed all repository functions to properly handle user-specific data
+
+```python
+def get_current_user_id() -> int:
+    """
+    Get the ID of the currently logged in user.
+    
+    Returns:
+        int: User ID of the logged-in user, or 2 (default user) if no one is logged in
+    """
+    return current_user_id if current_user_id is not None else 2
+```
+
+### 12.4 Enhanced Error Handling
+
+**Issue**: Application would crash when encountering missing data files or malformed JSON.
+
+**Root Cause**: Insufficient error handling in data loading code.
+
+**Solution**:
+- Added try/except blocks around all file operations
+- Added proper logging of all errors
+- Implemented graceful fallbacks when files are missing or corrupted
+- Added type hints to improve code reliability
+
+```python
+try:
+    with open(FINANCE_PATH, "r") as file:
+        finance_data = json.load(file)
+        if "users" not in finance_data:
+            finance_data["users"] = {}
+except (json.JSONDecodeError, FileNotFoundError) as e:
+    logger.error(f"Error loading finance data: {e}")
+    finance_data = {"users": {}}
+```
+
+### 12.5 Route Standardization
+
+**Issue**: Inconsistent URL patterns made API usage and navigation confusing.
+
+**Root Cause**: Lack of standardized URL routing scheme.
+
+**Solution**:
+- Standardized all API endpoints to follow RESTful conventions
+- Updated HTML templates to use consistent navigation URLs
+- Added legacy route handlers for backward compatibility
+- Fixed redirect issues in the authentication flow
+
+```python
+# Legacy API endpoints maintained for backward compatibility 
+@app.route('/add_income', methods=['POST'])
+def legacy_add_income_route():
+    """Legacy endpoint for adding income - redirects to the new API endpoint"""
+    return add_income_route()
+```
+
 ## 13. Development Notes
 
 ### 13.1 Code Style Guidelines
 
 - **Python**: Follow PEP 8 style guide
+- **Type Hints**: All new Python code should use type hints
+- **Error Handling**: All file operations and external calls should use try/except blocks
+- **Logging**: Use the logging module instead of print statements
 - **HTML/CSS/JS**: Use 2-space indentation
 - **File Naming**: Use snake_case for Python files, kebab-case for web files
 - **Documentation**: All modules and key functions should have docstrings

@@ -2,20 +2,16 @@ import json
 import os
 
 EXCHANGE_RATES_PATH = "data/exchange_rates.json"
-BASE_CURRENCY_PATH = "data/base_currency.json"
 
 def load_exchange_rates():
-
     with open(EXCHANGE_RATES_PATH, 'r') as file:
         return json.load(file)
 
 def save_exchange_rates(rates):
-
     with open(EXCHANGE_RATES_PATH, 'w') as file:
         json.dump(rates, file, indent=2)
 
 def get_exchange_rate(from_currency, to_currency):
-
     if from_currency == to_currency:
         return 1.0
         
@@ -26,7 +22,6 @@ def get_exchange_rate(from_currency, to_currency):
         raise ValueError(f"Exchange rate not found from {from_currency} to {to_currency}")
 
 def convert_currency(amount, from_currency, to_currency):
-
     if from_currency == to_currency:
         return amount
     
@@ -34,7 +29,6 @@ def convert_currency(amount, from_currency, to_currency):
     return round(amount * rate, 2)
 
 def add_currency_rate(from_currency, to_currency, rate):
-
     rates = load_exchange_rates()
     
     if from_currency not in rates["rates"]:
@@ -49,15 +43,12 @@ def add_currency_rate(from_currency, to_currency, rate):
     save_exchange_rates(rates)
 
 def get_available_currencies():
-
     rates = load_exchange_rates()
     return list(rates["rates"].keys())
 
 if __name__ == "__main__":
-
     print("Available currencies:", get_available_currencies())
     
-
     amount = 100
     from_curr = "EUR"
     to_curr = "PLN"

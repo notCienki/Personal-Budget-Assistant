@@ -1,11 +1,29 @@
+from datetime import datetime
+
 def validate_date(date: str) -> bool:
-    temp = date.split("-")
-    if len(temp) != 3:
+    """
+    Validate if the string is a valid date in YYYY-MM-DD format.
+    
+    Args:
+        date: String date in YYYY-MM-DD format
+        
+    Returns:
+        bool: True if date is valid, False otherwise
+    """
+    if not isinstance(date, str):
+        return False
+        
+    # Check format first
+    parts = date.split("-")
+    if len(parts) != 3:
         return False
     
-    if len(temp[0]) != 4 or len(temp[1]) != 2 or len(temp[2]) != 2:
+    if len(parts[0]) != 4 or len(parts[1]) != 2 or len(parts[2]) != 2:
         return False
-
-    if int(temp[0]) > 9999 or int(temp[1]) > 12 or int(temp[2]) > 31:
+    
+    # Try to parse as actual date
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+        return True
+    except ValueError:
         return False
-    return True

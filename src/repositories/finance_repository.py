@@ -2,39 +2,48 @@ import json
 import sys
 import os
 import copy
-import uuid
+from typing import List, Dict, Optional, Any, Union
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.utils.validation.validate_date import validate_date
 from src.repositories.categories_repository import get_category_by_id
 
-finance_path = "data/finances.json"  # Zmiana nazwy na "finances.json" - będzie przechowywać dane wszystkich użytkowników
+# Constants
+FINANCE_PATH = "data/finances.json"
 
-# Sprawdź czy plik istnieje, jeśli nie - utwórz go z pustą strukturą
-if not os.path.exists(finance_path):
-    with open(finance_path, 'w') as file:
+# Check if file exists, if not - create it with empty structure
+if not os.path.exists(FINANCE_PATH):
+    with open(FINANCE_PATH, 'w') as file:
         json.dump({"users": {}}, file, indent=2)
 
-# Załaduj dane finansowe
-with open(finance_path, "r") as file:
-    finance_data = json.load(file)
-    if "users" not in finance_data:
-        finance_data["users"] = {}
+# Load financial data
+try:
+    with open(FINANCE_PATH, "r") as file:
+        finance_data = json.load(file)
+        if "users" not in finance_data:
+            finance_data["users"] = {}
+except (json.JSONDecodeError, FileNotFoundError) as e:
+    print(f"Error loading finance data: {e}")
+    finance_data = {"users": {}}
 
-# Funkcja do zapisu danych finansowych
-def save_finance_data():
-    with open(finance_path, "w") as file:
+def save_finance_data() -> None:
+    """
+    Save financial data to JSON file.
+    """
+    with open(FINANCE_PATH, "w") as file:
         json.dump(finance_data, file, indent=2)
 
-# Funkcja do migracji danych ze starego formatu
-def migrate_legacy_finance_data():
+def migrate_legacy_finance_data() -> None:
+    """
+    Migrate financial data from old format to the new one.
+    """
     old_finance_path = "data/finance.json"
     if os.path.exists(old_finance_path):
         try:
             with open(old_finance_path, "r") as file:
                 old_data = json.load(file)
                 
-            # Jeśli istnieją jakieś dane w starym formacie i nie zostały jeszcze zmigrowane
+            # If data exists in old format and hasn't been migrated yet
             if ("spending" in old_data or "incomes" in old_data) and "1" not in finance_data["users"]:
                 finance_data["users"]["1"] = {
                     "spending": old_data.get("spending", []),
@@ -45,11 +54,19 @@ def migrate_legacy_finance_data():
         except Exception as e:
             print(f"Błąd podczas migracji danych finansowych: {e}")
 
-# Wykonaj migrację
+# Execute migration
 migrate_legacy_finance_data()
 
-# Pomocnicza funkcja do pobrania danych użytkownika (lub utworzenia pustej struktury)
-def get_user_finance_data(user_id):
+def get_user_finance_data(user_id: int) -> Dict:
+    """
+    Get user's financial data or create empty structure if none exists.
+    
+    Args:
+        user_id: User identifier
+        
+    Returns:
+        Dictionary containing user's financial data
+    """
     user_id_str = str(user_id)
     if user_id_str not in finance_data["users"]:
         finance_data["users"][user_id_str] = {"spending": [], "incomes": []}
@@ -62,42 +79,66 @@ def get_user_finance_data(user_id):
 #
 # -------------------------------
 
-def get_all_spending(user_id=1):
+def get_all_spending(user_id: int = 1) -> List[Dict]:
+    """
+    Get all spending records for a user with category names.
+    
+    Args:
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        List of spending records with category names instead of IDs
+    """
     user_data = get_user_finance_data(user_id)
     spends = user_data['spending']
     returned = []
     for row in spends:
         temp = copy.deepcopy(row)
         category_id = row['categoryId']
-        temp['category'] = get_category_by_id(category_id, user_id)["name"]
+        category = get_category_by_id(category_id, user_id)
+        temp['category'] = category["name"] if category else "Unknown"
         temp.pop('categoryId')
         returned.append(temp)
     return returned
 
-def get_month_spending(month, year, user_id=1):
+def get_month_spending(month: int, year: int, user_id: int = 1) -> List[Dict]:
+    """
+    Get spending records for a specific month.
+    
+    Args:
+        month: Month (1-12)
+        year: Year
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        List of spending records for the specified month
+    """
     user_data = get_user_finance_data(user_id)
     spends = user_data['spending']
     returned = []
+    month_prefix = f"{year}-{month:02d}"
+    
     for row in spends:
-        if row['date'].startswith(f"{year}-{month:02d}"):
+        if row['date'].startswith(month_prefix):
             temp = copy.deepcopy(row)
             category_id = row['categoryId']
-            temp['category'] = get_category_by_id(category_id, user_id)["name"]
+            category = get_category_by_id(category_id, user_id)
+            temp['category'] = category["name"] if category else "Unknown"
             temp.pop('categoryId')
             returned.append(temp)
     return sorted(returned, key=lambda k: k['date'])
 
-def get_month_income(month, year, user_id=1):
-    user_data = get_user_finance_data(user_id)
-    spends = user_data['incomes']
-    returned = []
-    for row in spends:
-        if row['date'].startswith(f"{year}-{month:02d}"):
-            temp = copy.deepcopy(row)
-            returned.append(temp)
-    return sorted(returned, key=lambda k: k['date'])
-
-def get_spending_by_id(id, user_id=1):
+def get_spending_by_id(id: int, user_id: int = 1) -> Optional[Dict]:
+    """
+    Get a specific spending record by its ID.
+    
+    Args:
+        id: Spending record ID
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        Spending record dict or None if not found
+    """
     user_data = get_user_finance_data(user_id)
     spends = user_data['spending']
     for row in spends:
@@ -105,10 +146,23 @@ def get_spending_by_id(id, user_id=1):
             return row
     return None
 
-def add_spending(data, user_id=1):
+def add_spending(data: Dict, user_id: int = 1) -> Dict:
+    """
+    Add a new spending record.
+    
+    Args:
+        data: Dictionary with spending data
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        The created spending record
+        
+    Raises:
+        ValueError: If date format is invalid
+    """
     user_data = get_user_finance_data(user_id)
     
-    # Generowanie unikalnego ID
+    # Generate unique ID
     id = 1
     for row in user_data['spending']:
         if row['id'] >= id:
@@ -124,22 +178,47 @@ def add_spending(data, user_id=1):
         "amount": data["amount"],
         "categoryId": data["category"],
         "date": data["date"],
-        "note": data["note"]
+        "note": data.get("note", "")
     }
 
     user_data['spending'].append(temp)
     save_finance_data()
     return temp
 
-def remove_spending_by_id(id, user_id=1):
+def remove_spending_by_id(id: int, user_id: int = 1) -> bool:
+    """
+    Remove a spending record by its ID.
+    
+    Args:
+        id: Spending record ID
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        True if removed, False if not found
+    """
     user_data = get_user_finance_data(user_id)
     for row in user_data['spending']:
         if row['id'] == id:
             user_data['spending'].remove(row)
             save_finance_data()
-            return 
+            return True
+    return False
 
-def update_spending(id, data, user_id=1):
+def update_spending(id: int, data: Dict, user_id: int = 1) -> bool:
+    """
+    Update a spending record.
+    
+    Args:
+        id: Spending record ID
+        data: Dictionary with updated fields
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        True if updated, False if not found
+        
+    Raises:
+        ValueError: If date format is invalid
+    """
     if data.get("date") is not None and not validate_date(data["date"]):
         raise ValueError("Invalid date")
         
@@ -149,7 +228,8 @@ def update_spending(id, data, user_id=1):
             for key, value in data.items():
                 row[key] = value
             save_finance_data()
-            return 
+            return True
+    return False
         
 # -------------------------------
 #
@@ -157,11 +237,53 @@ def update_spending(id, data, user_id=1):
 #
 # -------------------------------
 
-def get_all_incomes(user_id=1):
+def get_all_incomes(user_id: int = 1) -> List[Dict]:
+    """
+    Get all income records for a user.
+    
+    Args:
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        List of income records
+    """
     user_data = get_user_finance_data(user_id)
     return user_data['incomes']
 
-def get_income_by_id(id, user_id=1):
+def get_month_income(month: int, year: int, user_id: int = 1) -> List[Dict]:
+    """
+    Get income records for a specific month.
+    
+    Args:
+        month: Month (1-12)
+        year: Year
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        List of income records for the specified month
+    """
+    user_data = get_user_finance_data(user_id)
+    incomes = user_data['incomes']
+    returned = []
+    month_prefix = f"{year}-{month:02d}"
+    
+    for row in incomes:
+        if row['date'].startswith(month_prefix):
+            temp = copy.deepcopy(row)
+            returned.append(temp)
+    return sorted(returned, key=lambda k: k['date'])
+
+def get_income_by_id(id: int, user_id: int = 1) -> Optional[Dict]:
+    """
+    Get a specific income record by its ID.
+    
+    Args:
+        id: Income record ID
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        Income record dict or None if not found
+    """
     user_data = get_user_finance_data(user_id)
     incomes = user_data['incomes']
     for row in incomes:
@@ -169,10 +291,23 @@ def get_income_by_id(id, user_id=1):
             return row
     return None
 
-def add_income(data, user_id=1):
+def add_income(data: Dict, user_id: int = 1) -> Dict:
+    """
+    Add a new income record.
+    
+    Args:
+        data: Dictionary with income data
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        The created income record
+        
+    Raises:
+        ValueError: If date format is invalid
+    """
     user_data = get_user_finance_data(user_id)
     
-    # Generowanie unikalnego ID
+    # Generate unique ID
     id = 1
     for row in user_data['incomes']:
         if row['id'] >= id:
@@ -186,22 +321,47 @@ def add_income(data, user_id=1):
         "currency": data["currency"],
         "amount": data["amount"],
         "date": data["date"],
-        "note": data["note"]
+        "note": data.get("note", "")
     }
 
     user_data['incomes'].append(temp)
     save_finance_data()
     return temp
 
-def remove_income_by_id(id, user_id=1):
+def remove_income_by_id(id: int, user_id: int = 1) -> bool:
+    """
+    Remove an income record by its ID.
+    
+    Args:
+        id: Income record ID
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        True if removed, False if not found
+    """
     user_data = get_user_finance_data(user_id)
     for row in user_data['incomes']:
         if row['id'] == id:
             user_data['incomes'].remove(row)
             save_finance_data()
-            return 
+            return True
+    return False
 
-def update_income(id, data, user_id=1):
+def update_income(id: int, data: Dict, user_id: int = 1) -> bool:
+    """
+    Update an income record.
+    
+    Args:
+        id: Income record ID
+        data: Dictionary with updated fields
+        user_id: User identifier (default: 1)
+        
+    Returns:
+        True if updated, False if not found
+        
+    Raises:
+        ValueError: If date format is invalid
+    """
     if data.get("date") is not None and not validate_date(data["date"]):
         raise ValueError("Invalid date")
         
@@ -211,7 +371,8 @@ def update_income(id, data, user_id=1):
             for key, value in data.items():
                 row[key] = value
             save_finance_data()
-            return
+            return True
+    return False
 
 
 

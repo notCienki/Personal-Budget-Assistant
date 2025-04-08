@@ -3,6 +3,37 @@
     "1": {
       "spending": [],
       "incomes": []
+    },
+    "2": {
+      "spending": [
+        {
+          "id": 1,
+          "name": "ada",
+          "currency": "PLN",
+          "amount": 1500.0,
+          "categoryId": 2,
+          "date": "2025-04-07",
+          "note": ""
+        },
+        {
+          "id": 2,
+          "name": "lego",
+          "currency": "PLN",
+          "amount": 400.0,
+          "categoryId": 3,
+          "date": "2025-04-07",
+          "note": ""
+        }
+      ],
+      "incomes": [
+        {
+          "id": 1,
+          "currency": "PLN",
+          "amount": 4000.0,
+          "date": "2025-04-07",
+          "note": "wyplata"
+        }
+      ]
     }
   }
 }

@@ -10,7 +10,29 @@
     />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link href="main.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .report-card {
+        border-left: 4px solid #4ECDC4;
+      }
+      .btn-enhanced {
+        background-color: #4ECDC4;
+        color: white;
+        border: none;
+      }
+      .btn-enhanced:hover {
+        background-color: #36B1A9;
+        color: white;
+      }
+      .report-success {
+        animation: fadeInOut 5s;
+      }
+      @keyframes fadeInOut {
+        0% { opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { opacity: 0; }
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,18 +52,18 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="expenses.html">Strona główna</a>
+              <a class="nav-link" href="/expenses">Strona główna</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="income_dashboard.html">Przychody</a>
+              <a class="nav-link" href="/income">Przychody</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="categories.html"
+              <a class="nav-link" href="/categories"
                 >Zarządzanie kategoriami</a
               >
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="currency.html">Przelicznik walut</a>
+              <a class="nav-link" href="/currency">Przelicznik walut</a>
             </li>
           </ul>
         </div>
@@ -99,11 +121,66 @@
           <ul id="this-month-incomes" class="list-group mt-3"></ul>
         </div>
       </div>
+      
+      <!-- Enhanced Reports Section -->
+      <div class="card mb-4 report-card">
+        <div class="card-header bg-light">
+          <h4 class="mb-0">Raportowanie i Analiza</h4>
+        </div>
+        <div class="card-body">
+          <!-- Success message (hidden by default) -->
+          <div id="reportSuccess" class="alert alert-success mb-4 d-none">
+            Raport został wygenerowany pomyślnie! 
+            <a href="#" id="downloadReportLink" class="alert-link">Kliknij tutaj, aby pobrać</a>
+          </div>
+          
+          <!-- Error message (hidden by default) -->
+          <div id="reportError" class="alert alert-danger mb-4 d-none">
+            Wystąpił błąd podczas generowania raportu.
+          </div>
+        
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    <i class="bi bi-file-earmark-bar-graph"></i> Raporty
+                  </h5>
+                  <p class="card-text">Generuj raport z podsumowaniem finansów za wybrany okres</p>
+                  <button id="generateReportBtn" class="btn btn-primary w-100 mb-2">
+                    <i class="bi bi-file-earmark-text"></i> Generuj raport PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <h5 class="card-subtitle mb-3">Funkcje raportowania</h5>
+              <ul class="list-group">
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-pie-chart me-2"></i> Analiza wydatków według kategorii
+                </li>
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-bar-chart me-2"></i> Porównanie przychodów i wydatków
+                </li>
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-table me-2"></i> Szczegółowe zestawienie transakcji
+                </li>
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-file-earmark-pdf me-2"></i> Eksport do formatu PDF
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Legacy Report Section -->
       <div class="card mb-4">
         <div class="card-body">
           <h4 class="card-title">Przegląd przychodów</h4>
           <button id="viewIncomes" class="btn btn-secondary w-100">
-            Wygeneruj raport z ostatniego miesiąca
+            Wygeneruj podstawowy raport
           </button>
           <ul id="incomesList" class="list-group mt-3"></ul>
         </div>
@@ -115,6 +192,13 @@
     </footer>
 
     <script>
+      // Set current month and year as default in the report form
+      document.addEventListener('DOMContentLoaded', function() {
+        const now = new Date();
+        document.getElementById('reportMonth').value = now.getMonth() + 1;
+        document.getElementById('reportYear').value = now.getFullYear();
+      });
+      
       function updateCurrentMonthIncome() {
         fetch("/api/incomes/this_month")
           .then((response) => response.json())
@@ -179,6 +263,58 @@
           })
           .catch((error) => console.error("Error deleting income:", error));
       }
+      
+      // Generate report
+      document.getElementById('generateReportBtn').addEventListener('click', function() {
+        const now = new Date();
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const year = now.getFullYear();
+        
+        showSpinner();
+        
+        // Call the enhanced report generation endpoint
+        fetch('/api/generate_enhanced_report', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            month: month,
+            year: year
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          hideSpinner();
+          if (data.success) {
+            // Offer to download the report
+            showMessage('success', 'Raport został wygenerowany');
+            
+            // Create download link
+            const downloadDiv = document.createElement('div');
+            downloadDiv.className = 'alert alert-info mt-3';
+            downloadDiv.innerHTML = `
+              <p><strong>Raport został wygenerowany!</strong></p>
+              <p>Kliknij poniżej, aby pobrać raport:</p>
+              <a href="${data.report_url}" class="btn btn-info" target="_blank">
+                <i class="bi bi-download"></i> Pobierz raport PDF
+              </a>
+            `;
+            
+            // Display the download link
+            document.querySelector('.container').prepend(downloadDiv);
+            
+            // Scroll to top to make the link visible
+            window.scrollTo(0, 0);
+          } else {
+            showMessage('error', 'Błąd przy generowaniu raportu: ' + data.message);
+          }
+        })
+        .catch(error => {
+          hideSpinner();
+          showMessage('error', 'Błąd przy generowaniu raportu: ' + error.message);
+        });
+      });
 
       updateCurrentMonthIncome();
 
