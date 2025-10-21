@@ -29,23 +29,23 @@ The Personal Home Budget Assistant is a comprehensive desktop application design
 
 ## Key Features
 
-### 🔒 User Management
+### User Management
 - Secure account registration and authentication
 - Password encryption with bcrypt
 - User profile management
 
-### 💰 Financial Tracking
+### Financial Tracking
 - **Expense Management**: Track all expenses with detailed categorization
 - **Income Recording**: Monitor multiple income streams
 - **Transaction History**: Full historical view of financial activities
 - **Category System**: Organize expenses into customizable categories
 
-### 📊 Analysis & Reporting
+### Analysis & Reporting
 - **Financial Reports**: Generate detailed PDF reports of your finances
 - **Visualizations**: Visual representations of spending patterns
 - **Monthly Summaries**: Quick overview of monthly financial activities
 
-### 🌏 Currency Support
+### Currency Support
 - **Multi-Currency Support**: Track finances in various currencies
 - **Real-Time Conversion**: Currency converter with up-to-date exchange rates
 - **Supports 10+ Major Currencies**: Including PLN, EUR, USD, GBP, and more
