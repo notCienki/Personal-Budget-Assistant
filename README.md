@@ -158,9 +158,3 @@ The application prioritizes security through:
 ## Documentation
 
 For detailed technical documentation and user guides, please refer to the [TECHNICAL.md](docs/TECHNICAL.md) file.
-
----
-
-<div align="center">
-  <p>© 2025 Personal Home Budget Assistant</p>
-</div>
